@@ -1,0 +1,153 @@
+﻿<Window x:Class="UsageStats.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
+    xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
+    Title="{Binding Title}" Width="640" Height="960" ShowInTaskbar="False"
+    Icon="Images/piechart.ico">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <tb:TaskbarIcon x:Name="NotifyIcon" IconSource="Images/piechart.ico" DoubleClickCommand="Open">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open" Click="Show_Click"/>
+                    <MenuItem Header="Preferences..." Click="Settings_Click"/>
+                    <MenuItem Header="Exit" Click="Exit_Click"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open report folder" ToolTip="{Binding Settings.ReportPath}" Click="ReportFolder_Click"/>
+                <MenuItem Header="_Preferences..." Click="Settings_Click"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="Project web page" Click="ProjectWebPage_Click"/>
+                <MenuItem Header="Chec_k for Updates" IsCheckable="True" IsChecked="{Binding Settings.CheckForUpdates}"/>
+                <Separator/>
+                <MenuItem Header="_About" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding CurrentPosition}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding CurrentApplication}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl Margin="0 4 0 0">
+            <TabItem Header="General">
+                <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}"/>
+            </TabItem>
+            <TabItem Header="Applications">
+                <TabControl>
+                    <TabItem Header="Report">
+                        <TextBox AcceptsReturn="True" Text="{Binding ApplicationReport, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+                    </TabItem>
+                    <!--<TabItem Header="Chart">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:PieSeries ItemsSource="{Binding ApplicationUsage}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value.Activity.TotalSeconds}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>-->
+                </TabControl>
+            </TabItem>
+            <TabItem Header="Mouse">
+                <TabControl>
+                    <TabItem Header="Report">
+                        <TextBox AcceptsReturn="True" Text="{Binding MouseStatistics, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+                    </TabItem>
+                    <!--
+                    <TabItem Header="Double click speed">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:ColumnSeries ItemsSource="{Binding MouseStatistics.DoubleClickSpeed.Data}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>
+                    <TabItem Header="Speed">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:ColumnSeries ItemsSource="{Binding MouseStatistics.MovementSpeed.Data}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>
+                    <TabItem Header="Direction">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:ColumnSeries ItemsSource="{Binding MouseStatistics.MovementDirection.Data}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>
+                    -->
+                    <TabItem Header="Clicks">
+                        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image Source="{Binding MouseStatistics.ClickMap.Source}"/>
+                        </Border>
+                    </TabItem>
+                    <TabItem Header="Double-clicks">
+                        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image Source="{Binding MouseStatistics.DoubleClickMap.Source}"/>
+                        </Border>
+                    </TabItem>
+                    <TabItem Header="Tracks">
+                        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image Source="{Binding MouseStatistics.TraceMap.Source}"/>
+                        </Border>
+                    </TabItem>
+                    <TabItem Header="Drag tracks">
+                        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image Source="{Binding MouseStatistics.DragTraceMap.Source}"/>
+                        </Border>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+            <TabItem Header="Keyboard">
+                <TabControl>
+                    <TabItem Header="Report">
+                        <TextBox AcceptsReturn="True" Text="{Binding KeyboardStatistics, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+                    </TabItem>
+                    <!--
+                    <TabItem Header="Typing speed">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:ColumnSeries ItemsSource="{Binding KeyboardStatistics.TypingSpeed.Data}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>
+                    <TabItem Header="Key frequency">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:ColumnSeries ItemsSource="{Binding KeyboardStatistics.KeyUsage}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>
+                    <TabItem Header="Keys per hour">
+                        <dvc:Chart>
+                            <dvc:Chart.Series>
+                                <dvc:ColumnSeries ItemsSource="{Binding KeyboardStatistics.KeyCountPerHour.Values}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+                            </dvc:Chart.Series>
+                        </dvc:Chart>
+                    </TabItem>
+                    -->
+                </TabControl>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
