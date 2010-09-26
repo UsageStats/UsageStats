@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStats", "UsageStats\Us
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStats.Tests", "UsageStats.Tests\UsageStats.Tests.csproj", "{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "UsageStats.Setup", "UsageStats.Setup\UsageStats.Setup.vdproj", "{6220C02A-089F-4D08-AB65-86FB066F0E95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,8 @@ Global
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6220C02A-089F-4D08-AB65-86FB066F0E95}.Debug|Any CPU.ActiveCfg = Debug
+		{6220C02A-089F-4D08-AB65-86FB066F0E95}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
