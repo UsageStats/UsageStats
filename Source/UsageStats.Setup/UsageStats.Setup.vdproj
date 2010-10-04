@@ -15,43 +15,43 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_21143EC8D535552CA97635C91D87144F"
+        "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_6D2B94F539E69F854A2DFD649DA43D7B"
+        "MsmKey" = "8:_B4B4991A0D35CAFDEDAD590172FE6221"
+        "OwnerKey" = "8:_CAC2F21B94DB0A43D57DFA5AEDD135AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B4B4991A0D35CAFDEDAD590172FE6221"
         "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C9A0AA0AEE1649EC1C7E4C355E87F4B3"
+        "MsmKey" = "8:_CAC2F21B94DB0A43D57DFA5AEDD135AA"
         "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DF4D2E8661BB3D56E3770F46D9D00ECA"
-        "OwnerKey" = "8:_C9A0AA0AEE1649EC1C7E4C355E87F4B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DF4D2E8661BB3D56E3770F46D9D00ECA"
+        "MsmKey" = "8:_CDA0A1A6B55B5961FE06E360CFBD14B5"
         "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EDC2E62FB96BB29DE0FE6ED67A4F54B4"
-        "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F1BF891931DFA693262F74A2CC3232C9"
+        "MsmKey" = "8:_E1028FA8B09FC05BDFD96E881DE8C307"
         "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -64,37 +64,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F1BF891931DFA693262F74A2CC3232C9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4168E41DF8534A7C9F93DB32A029CBD0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C9A0AA0AEE1649EC1C7E4C355E87F4B3"
+        "OwnerKey" = "8:_21143EC8D535552CA97635C91D87144F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DF4D2E8661BB3D56E3770F46D9D00ECA"
+        "OwnerKey" = "8:_CAC2F21B94DB0A43D57DFA5AEDD135AA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EDC2E62FB96BB29DE0FE6ED67A4F54B4"
+        "OwnerKey" = "8:_B4B4991A0D35CAFDEDAD590172FE6221"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6D2B94F539E69F854A2DFD649DA43D7B"
+        "OwnerKey" = "8:_E1028FA8B09FC05BDFD96E881DE8C307"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CDA0A1A6B55B5961FE06E360CFBD14B5"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -115,6 +115,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -131,6 +139,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -160,20 +176,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6D2B94F539E69F854A2DFD649DA43D7B"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_21143EC8D535552CA97635C91D87144F"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Hardcodet.Wpf.TaskbarNotification, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_6D2B94F539E69F854A2DFD649DA43D7B"
+                    "_21143EC8D535552CA97635C91D87144F"
                     {
-                    "Name" = "8:Hardcodet.Wpf.TaskbarNotification.dll"
+                    "Name" = "8:nunit.framework.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Hardcodet.Wpf.TaskbarNotification.dll"
+            "SourcePath" = "8:nunit.framework.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5F24D653DAC4477B8FCD1CA6B4286B92"
@@ -191,45 +207,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C9A0AA0AEE1649EC1C7E4C355E87F4B3"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C9A0AA0AEE1649EC1C7E4C355E87F4B3"
-                    {
-                    "Name" = "8:System.Windows.Controls.DataVisualization.Toolkit.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Windows.Controls.DataVisualization.Toolkit.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_5F24D653DAC4477B8FCD1CA6B4286B92"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DF4D2E8661BB3D56E3770F46D9D00ECA"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B4B4991A0D35CAFDEDAD590172FE6221"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DF4D2E8661BB3D56E3770F46D9D00ECA"
+                    "_B4B4991A0D35CAFDEDAD590172FE6221"
                     {
                     "Name" = "8:WPFToolkit.dll"
                     "Attributes" = "3:512"
@@ -253,20 +238,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EDC2E62FB96BB29DE0FE6ED67A4F54B4"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CAC2F21B94DB0A43D57DFA5AEDD135AA"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PropertyEditor, Version=1.0.3921.4587, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EDC2E62FB96BB29DE0FE6ED67A4F54B4"
+                    "_CAC2F21B94DB0A43D57DFA5AEDD135AA"
                     {
-                    "Name" = "8:PropertyEditor.dll"
+                    "Name" = "8:System.Windows.Controls.DataVisualization.Toolkit.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:PropertyEditor.dll"
+            "SourcePath" = "8:System.Windows.Controls.DataVisualization.Toolkit.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5F24D653DAC4477B8FCD1CA6B4286B92"
@@ -284,20 +269,51 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F1BF891931DFA693262F74A2CC3232C9"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CDA0A1A6B55B5961FE06E360CFBD14B5"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Hardcodet.Wpf.TaskbarNotification, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_F1BF891931DFA693262F74A2CC3232C9"
+                    "_CDA0A1A6B55B5961FE06E360CFBD14B5"
                     {
-                    "Name" = "8:nunit.framework.dll"
+                    "Name" = "8:Hardcodet.Wpf.TaskbarNotification.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:nunit.framework.dll"
+            "SourcePath" = "8:Hardcodet.Wpf.TaskbarNotification.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5F24D653DAC4477B8FCD1CA6B4286B92"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1028FA8B09FC05BDFD96E881DE8C307"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:PropertyEditor, Version=1.0.3929.15998, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E1028FA8B09FC05BDFD96E881DE8C307"
+                    {
+                    "Name" = "8:PropertyEditor.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:PropertyEditor.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5F24D653DAC4477B8FCD1CA6B4286B92"
@@ -400,12 +416,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Microsoft"
+        "Manufacturer" = "8:objo"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Application Usage Stats"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Microsoft"
+        "ARPCONTACT" = "8:objo"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -927,7 +943,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4168E41DF8534A7C9F93DB32A029CBD0"
             {
-            "SourcePath" = "8:..\\UsageStats\\obj\\Release\\UsageStats.exe"
+            "SourcePath" = "8:..\\UsageStats\\obj\\Debug\\UsageStats.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5F24D653DAC4477B8FCD1CA6B4286B92"
