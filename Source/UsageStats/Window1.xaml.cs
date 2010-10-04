@@ -68,7 +68,14 @@ namespace UsageStats
 
         private void ReportFolder_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(vm.Settings.ReportPath);
+            try
+            {
+                Process.Start(vm.Settings.ReportPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
