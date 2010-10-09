@@ -61,7 +61,7 @@ namespace UsageStats.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public double MouseDownSize {
             get {
                 return ((double)(this["MouseDownSize"]));
@@ -104,6 +104,30 @@ namespace UsageStats.Properties {
             }
             set {
                 this["InterruptionThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlwaysOnTop {
+            get {
+                return ((bool)(this["AlwaysOnTop"]));
+            }
+            set {
+                this["AlwaysOnTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("96")]
+        public double ScreenResolution {
+            get {
+                return ((double)(this["ScreenResolution"]));
+            }
+            set {
+                this["ScreenResolution"] = value;
             }
         }
     }

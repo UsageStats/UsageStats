@@ -39,10 +39,22 @@ Windows Explorer";
         private readonly Stopwatch watch;
         private Point lastPoint;
 
+        public bool AlwaysOnTop { get { return Settings.AlwaysOnTop; } }
+
         public MainViewModel()
         {
             Settings = new SettingsViewModel();
             ScreenResolution = 96;
+
+            if (String.IsNullOrEmpty(Settings.ReportPath))
+            {
+                Settings.ReportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                                                   "UsageStats");
+            }
+            if (String.IsNullOrEmpty(Settings.ApplicationList))
+            {
+                Settings.ApplicationList = DefaultApplicationList;
+            }
 
             InitStatistics();
 
@@ -57,15 +69,6 @@ Windows Explorer";
             keys = new InterceptKeys();
             mouse = new InterceptMouse(MouseHandler);
 
-            if (String.IsNullOrEmpty(Settings.ReportPath))
-            {
-                Settings.ReportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                                                   "UsageStats");
-            }
-            if (String.IsNullOrEmpty(Settings.ApplicationList))
-            {
-                Settings.ApplicationList = DefaultApplicationList;
-            }
         }
 
         public DateTime RecordingStarted { get; set; }
@@ -111,24 +114,32 @@ Windows Explorer";
 
         public string Report
         {
-            get { return CreateTotalReport(); }
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append(RecordingReport);
+                sb.AppendLine();
+                sb.AppendLine(Statistics.ToString());
+                return sb.ToString();
+            }
         }
 
-        private string CreateTotalReport()
+        private string RecordingReport
         {
-            var sb = new StringBuilder();
-            sb.AppendLine(String.Format("Recording started: {0}", RecordingStarted));
-            sb.AppendLine(String.Format("Recording ended:   {0}", Recording.LastCheck));
-            sb.AppendLine(String.Format("First activity:    {0}", FirstActivity));
-            sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
-            TimeSpan duration = LastActivity - FirstActivity;
-            sb.AppendLine(String.Format("Duration:                     {0:00}:{1:00}:{2:00}", duration.TotalHours,
-                                        duration.Minutes, duration.Seconds));
-            sb.AppendLine();
-            sb.AppendLine(Statistics.ToString());
-            return sb.ToString();
+            get
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine(String.Format("Recording started: {0}", RecordingStarted));
+                sb.AppendLine(String.Format("Recording ended:   {0}", Recording.LastCheck));
+                sb.AppendLine(String.Format("First activity:    {0}", FirstActivity));
+                sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
+                TimeSpan duration = LastActivity - FirstActivity;
+                sb.AppendLine(String.Format("Duration:                     {0:00}:{1:00}:{2:00}", duration.TotalHours,
+                                            duration.Minutes, duration.Seconds));
+                return sb.ToString();
+            }
         }
-
+       
         private void InitStatistics()
         {
             FirstActivity = new DateTime(0);
@@ -216,12 +227,15 @@ Windows Explorer";
         private string CreateReport(Statistics s)
         {
             var sb = new StringBuilder();
-            sb.Append(s.Report());
             if (s == Statistics)
             {
+                sb.Append(RecordingReport);
                 sb.AppendLine();
                 sb.Append(CreateApplicationReport());
+                sb.AppendLine();
             }
+
+            sb.Append(s.FullReport());
             return sb.ToString();
         }
 
@@ -461,6 +475,14 @@ Windows Explorer";
         public void OnClosed()
         {
             Settings.Save();
+        }
+
+        public void OnSettingsChanged()
+        {
+            Settings.Save();
+
+            RaisePropertyChanged("AlwaysOnTop");
+            AddApplications();
         }
     }
 }

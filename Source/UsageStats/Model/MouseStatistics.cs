@@ -4,13 +4,12 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using UsageStats.Properties;
 
 namespace UsageStats
 {
     public class MouseStatistics : Observable
     {
-        public static double ScreenResolution = 96;
-
         private readonly Brush LeftBrush = new SolidColorBrush(Color.FromArgb(60, 0, 200, 0));
         private readonly Brush MiddleBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 255));
         private readonly Brush RightBrush = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
@@ -29,7 +28,7 @@ namespace UsageStats
             MovementSpeed = new Histogram(50);
             MovementDirection = new Histogram(45);
 
-            var w = (int) (SystemParameters.PrimaryScreenWidth/screenMapScale);
+            var w = (int)(SystemParameters.PrimaryScreenWidth / screenMapScale);
             ClickMap = new ScreenBitmap(w);
             DoubleClickMap = new ScreenBitmap(w);
             TraceMap = new ScreenBitmap(w);
@@ -56,7 +55,12 @@ namespace UsageStats
 
         public string MouseDistanceText
         {
-            get { return String.Format("{0:0.00} m", TotalMouseDistance/ScreenResolution*0.0254); }
+            get
+            {
+                var dpi = Settings.Default.ScreenResolution;
+                if (dpi <= 0) dpi = 96;
+                return String.Format("{0:0.00} m ({1:0.#} dpi)", TotalMouseDistance / dpi * 0.0254,dpi);
+            }
         }
 
         public override string ToString()
@@ -146,15 +150,15 @@ namespace UsageStats
         {
             double dx = pt.X - lastPoint.X;
             double dy = pt.Y - lastPoint.Y;
-            double dl = Math.Sqrt(dx*dx + dy*dy);
+            double dl = Math.Sqrt(dx * dx + dy * dy);
 
-            double deltaTime = moveTimer.ElapsedMilliseconds*0.001;
+            double deltaTime = moveTimer.ElapsedMilliseconds * 0.001;
             moveTimer.Restart();
 
             // speed: pixels/second
-            double speed = deltaTime != 0 ? dl/deltaTime : 0;
+            double speed = deltaTime != 0 ? dl / deltaTime : 0;
 
-            double direction = Math.Atan2(dy, dx)/Math.PI*180;
+            double direction = Math.Atan2(dy, dx) / Math.PI * 180;
 
             if (speed > 0)
             {

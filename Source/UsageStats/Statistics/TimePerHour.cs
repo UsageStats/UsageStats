@@ -33,7 +33,7 @@ namespace UsageStats
             for (int i = 0; i < 24; i++)
             {
                 if (showAll || PerHour[i].TotalSeconds > 0)
-                    sb.AppendLine(String.Format("  {0:00}: {1:0}:{2:00}:{3:00}", i, PerHour[i].Hours,PerHour[i].Minutes,PerHour[i].Seconds));
+                    sb.AppendLine(String.Format("  {0:00}: {1:00}:{2:00}:{3:00}", i, PerHour[i].Hours,PerHour[i].Minutes,PerHour[i].Seconds));
             }
             return sb.ToString();
         }

@@ -12,7 +12,7 @@
       <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="MouseDownSize" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="CheckForUpdates" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -22,6 +22,12 @@
     </Setting>
     <Setting Name="InterruptionThreshold" Type="System.Double" Scope="User">
       <Value Profile="(Default)">120</Value>
+    </Setting>
+    <Setting Name="AlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ScreenResolution" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">96</Value>
     </Setting>
   </Settings>
 </SettingsFile>

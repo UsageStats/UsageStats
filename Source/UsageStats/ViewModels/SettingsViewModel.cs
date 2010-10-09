@@ -12,6 +12,7 @@ namespace UsageStats
         }
 
         [Category("Reports|Output")]
+        [DisplayName("Report path")]
         public string ReportPath
         {
             get { return settings.ReportPath; }
@@ -23,6 +24,7 @@ namespace UsageStats
         }
 
         [Category("Statistics|Limits")]
+        [DisplayName("Inactivity threshold (sec)")]
         public double InactivityThreshold
         {
             get { return settings.InactivityThreshold; }
@@ -34,6 +36,7 @@ namespace UsageStats
         }
 
         [Category("Statistics|Limits")]
+        [DisplayName("Interruption threshold (sec)")]
         public double InterruptionThreshold
         {
             get { return settings.InterruptionThreshold; }
@@ -44,8 +47,22 @@ namespace UsageStats
             }
         }
 
+
+        [Category("Statistics|Limits")]
+        [DisplayName("Screen resolution (dpi)")]
+        public double ScreenResolution
+        {
+            get { return settings.ScreenResolution; }
+            set
+            {
+                settings.ScreenResolution = value;
+                RaisePropertyChanged("InterruptionThreshold");
+            }
+        }
+
         [Category("Applications|List")]
         [Height(200)]
+        [DisplayName("Applications")]
         public string ApplicationList
         {
             get { return settings.ApplicationList; }
@@ -57,8 +74,10 @@ namespace UsageStats
         }
 
 
-        [Category("Style|Mouse maps")]
+        [Category("Maps|Mouse maps")]
         [Slidable(1, 20)]
+        [FormatString("0.0")]
+        [DisplayName("Mouse click diameter")]
         public double MouseDownSize
         {
             get { return settings.MouseDownSize; }
@@ -69,8 +88,10 @@ namespace UsageStats
             }
         }
 
-        [Category("Style|Mouse maps")]
+        [Category("Maps|Mouse maps")]
         [Slidable(1, 10)]
+        [FormatString("0.0")]
+        [DisplayName("Mouse track width")]
         public double MouseTrackWidth
         {
             get { return settings.MouseTrackWidth; }
@@ -81,16 +102,29 @@ namespace UsageStats
             }
         }
 
-        [Category("Preferences|Auto update")]
-        public bool CheckForUpdates
+        [Category("Window|Settings")]
+        [Slidable(1, 10)]
+        [DisplayName("Keep window always on top")]
+        public bool AlwaysOnTop
         {
-            get { return settings.CheckForUpdates; }
+            get { return settings.AlwaysOnTop; }
             set
             {
-                settings.CheckForUpdates = value;
-                RaisePropertyChanged("CheckForUpdates");
+                settings.AlwaysOnTop = value;
+                RaisePropertyChanged("AlwaysOnTop");
             }
         }
+
+        //[Category("Preferences|Auto update")]
+        //public bool CheckForUpdates
+        //{
+        //    get { return settings.CheckForUpdates; }
+        //    set
+        //    {
+        //        settings.CheckForUpdates = value;
+        //        RaisePropertyChanged("CheckForUpdates");
+        //    }
+        //}
 
         public void Save()
         {

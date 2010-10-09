@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
     xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
     Title="{Binding Title}" Width="640" Height="960" ShowInTaskbar="False"
+    Topmost="{Binding AlwaysOnTop}"
     Icon="Images/piechart.ico">
     <Window.Resources>
         <Style TargetType="Label">
@@ -37,7 +38,7 @@
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="Project web page" Click="ProjectWebPage_Click"/>
-                <MenuItem Header="Chec_k for Updates" IsCheckable="True" IsChecked="{Binding Settings.CheckForUpdates}"/>
+                <MenuItem Header="Chec_k for Updates" IsEnabled="False" IsCheckable="True" IsChecked="{Binding Settings.CheckForUpdates}"/>
                 <Separator/>
                 <MenuItem Header="_About" Click="About_Click"/>
             </MenuItem>
