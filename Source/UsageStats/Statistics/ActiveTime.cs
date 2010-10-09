@@ -36,15 +36,19 @@ namespace UsageStats
 
         public double Update(double maximumBreak)
         {
-            TimeSpan ts = DateTime.Now - LastCheck;
-            double sec = ts.TotalSeconds;
-            if (sec < maximumBreak)
+            lock (this)
             {
-                Add(ts.TotalSeconds);
-            }
+                var now = DateTime.Now;
+                var ts = now - LastCheck;
+                double sec = ts.TotalSeconds;
+                if (sec < maximumBreak)
+                {
+                    Add(ts.TotalSeconds);
+                }
 
-            LastCheck = DateTime.Now;
-            return sec;
+                LastCheck = now;
+                return sec;
+            }
         }
 
         public override string ToString()

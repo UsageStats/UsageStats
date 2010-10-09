@@ -81,9 +81,9 @@ namespace UsageStats
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             var d = new PropertyDialog { Icon = Icon, DataContext = vm.Settings, Title = "Application preferences" };
+            d.Topmost = this.Topmost;
             d.ShowDialog();
-            vm.Settings.Save();
-            vm.AddApplications();
+            vm.OnSettingsChanged();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -100,6 +100,7 @@ namespace UsageStats
         private void About_Click(object sender, RoutedEventArgs e)
         {
             var d = new AboutDialog(this);
+            d.Topmost = this.Topmost;
             d.Image = new BitmapImage(new Uri(@"pack://application:,,,/UsageStats;component/Images/chart.png"));
             d.Title = "About Application Usage Statistics";
             d.UpdateStatus = "The program is updated.";

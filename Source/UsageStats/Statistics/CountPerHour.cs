@@ -8,15 +8,15 @@ namespace UsageStats
     /// </summary>
     public class CountPerHour
     {
-        public int[] Count { get; private set; }
-
-        public TimePerHour Reference { get; private set; }
-
-        public CountPerHour(TimePerHour reference)
+        public CountPerHour(TimePerHour reference = null)
         {
             Count = new int[24];
             Reference = reference;
         }
+
+        public int[] Count { get; private set; }
+
+        public TimePerHour Reference { get; private set; }
 
         public void Increase()
         {
@@ -45,9 +45,11 @@ namespace UsageStats
                     if (Reference != null && Reference.PerHour[i].TotalSeconds > 0)
                     {
                         double ts = Reference.PerHour[i].TotalMinutes;
-                        sb.AppendLine(String.Format("  {0:00}:    {1}     {2:0.0}/min", i, Count[i],Count[i]/ts));
-                    } else
-                    sb.AppendLine(String.Format("  {0:00}:    {1}", i, Count[i]));
+                        sb.Append(String.Format("  {0:00}:    {1}", i, Count[i]));
+                        sb.AppendLine(String.Format("     {0:0.0}/min", Count[i]/ts));
+                    }
+                    else
+                        sb.AppendLine(String.Format("  {0:00}:    {1}", i, Count[i]));
                 }
             }
             return sb.ToString();
