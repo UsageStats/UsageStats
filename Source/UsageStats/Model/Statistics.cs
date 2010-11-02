@@ -14,7 +14,7 @@ namespace UsageStats
             ActivityPerHour = new TimePerHour();
             KeyboardStatistics = new KeyboardStatistics(Activity, ActivityPerHour);
             MouseStatistics = new MouseStatistics(Activity, ActivityPerHour, 1);
-            InterruptionsPerCountPerHour = new CountPerHour();
+            InterruptionsPerCountPerHour = new CountPerHour(ActivityPerHour);
         }
 
         public static double InactivityThreshold
@@ -41,45 +41,33 @@ namespace UsageStats
             {
                 double m = MouseStatistics.MouseActivity.TimeActive.TotalSeconds;
                 double k = KeyboardStatistics.KeyboardActivity.TimeActive.TotalSeconds;
-                return k == 0 ? 0 : m / k;
+                return k == 0 ? 0 : m/k;
             }
         }
 
         public override string ToString()
         {
-            return ShortReport();
-        }
-
-        public string ShortReport()
-        {
             var sb = new StringBuilder();
-            sb.AppendLine(String.Format("Active time:                  {0:00}:{1:00}:{2:00}", Activity.TimeActive.TotalHours,
-                                        Activity.TimeActive.Minutes, Activity.TimeActive.Seconds));
+            sb.AppendLine(String.Format("Active time:          {0}",Activity.TimeActive.ToShortString()));
+            if (MouseKeyboardRatio > 0)
+                sb.AppendLine(String.Format("Mouse/Keyboard ratio: {0:0.0}", MouseKeyboardRatio));
             sb.AppendLine();
 
-            sb.AppendFormat("ACTIVITY PER HOUR ({0:0}s threshold)", Settings.Default.InactivityThreshold);
-            sb.AppendLine();
+            sb.AppendLine("ACTIVITY PER HOUR");
             sb.AppendLine(ActivityPerHour.Report(false));
             sb.AppendLine();
 
-            sb.AppendFormat("INTERRUPTIONS PER HOUR ({0:0}s threshold)", Settings.Default.InterruptionThreshold);
-            sb.AppendLine();
+            sb.AppendLine("INTERRUPTIONS PER HOUR");
             sb.Append(InterruptionsPerCountPerHour.Report(false));
             sb.AppendLine();
-
-            if (MouseKeyboardRatio > 0)
-            {
-                sb.AppendLine();
-                sb.AppendLine(String.Format("Mouse/Keyboard ratio: {0:0.0}", MouseKeyboardRatio));
-            }
 
             return sb.ToString();
         }
 
-        public string FullReport()
+        public string Report()
         {
             var sb = new StringBuilder();
-            sb.AppendLine(ShortReport());
+            sb.AppendLine(ToString());
             sb.AppendLine();
 
             sb.AppendLine("KEYBOARD");

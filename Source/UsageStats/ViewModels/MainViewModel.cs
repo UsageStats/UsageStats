@@ -111,20 +111,8 @@ Windows Explorer";
         {
             get { return CreateApplicationReport(); }
         }
-
+      
         public string Report
-        {
-            get
-            {
-                var sb = new StringBuilder();
-                sb.Append(RecordingReport);
-                sb.AppendLine();
-                sb.AppendLine(Statistics.ToString());
-                return sb.ToString();
-            }
-        }
-
-        private string RecordingReport
         {
             get
             {
@@ -134,12 +122,13 @@ Windows Explorer";
                 sb.AppendLine(String.Format("First activity:    {0}", FirstActivity));
                 sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
                 TimeSpan duration = LastActivity - FirstActivity;
-                sb.AppendLine(String.Format("Duration:                     {0:00}:{1:00}:{2:00}", duration.TotalHours,
-                                            duration.Minutes, duration.Seconds));
+                sb.AppendLine(String.Format("Duration:                     {0}", duration.ToShortString()));
+                sb.AppendLine();
+                sb.AppendLine(Statistics.ToString());
                 return sb.ToString();
             }
         }
-       
+
         private void InitStatistics()
         {
             FirstActivity = new DateTime(0);
@@ -201,6 +190,16 @@ Windows Explorer";
             w.Write(CreateReport(s));
             w.Close();
 
+            if (Settings.DisplayDate)
+            {
+                string txt = String.Format("{0:yyyy-MM-dd}", RecordingStarted);
+
+                s.MouseStatistics.ClickMap.DrawDate(txt);
+                s.MouseStatistics.DoubleClickMap.DrawDate(txt);
+                s.MouseStatistics.TraceMap.DrawDate(txt);
+                s.MouseStatistics.DragTraceMap.DrawDate(txt);
+            }
+
             string imgPath = String.Format("{0}ClickMap_{1:yyyy-MM-dd}.png", prefix, RecordingStarted);
             SaveBitmap(s.MouseStatistics.ClickMap.Source, FindUniqueName(imgPath));
 
@@ -212,6 +211,40 @@ Windows Explorer";
 
             imgPath = String.Format("{0}DragTraceMap_{1:yyyy-MM-dd}.png", prefix, RecordingStarted);
             SaveBitmap(s.MouseStatistics.DragTraceMap.Source, FindUniqueName(imgPath));
+
+            string totalsPath = String.Format("{0}Totals.csv", prefix);
+            AppendTotals(s, totalsPath);
+        }
+
+        private void AppendTotals(Statistics s, string path)
+        {
+            StreamWriter w;
+            if (File.Exists(path))
+            {
+                w = new StreamWriter(path, true);
+            }
+            else
+            {
+                w = new StreamWriter(path);
+                w.WriteLine("Date;FirstActivity;LastActivity;ActiveTime;MouseKeyboardRatio;Keystrokes;KeystrokesPerMinute;LeftClicks;MiddleClicks;RightClicks;DoubleClicks;MouseDistance;WheelDistance;ClicksPerMinute;");
+            }
+            w.Write("{0:yyyy-MM-dd};", RecordingStarted);
+            w.Write("{0:HH:mm:ss};", FirstActivity);
+            w.Write("{0:HH:mm:ss};", LastActivity);
+            w.Write("{0};", s.Activity.TimeActive.ToShortString());
+            w.Write("{0:0.0};", s.MouseKeyboardRatio);
+            w.Write("{0};", s.KeyboardStatistics.KeyStrokes);
+            w.Write("{0:0};", s.KeyboardStatistics.KeyStrokesPerMinute);
+            w.Write("{0:0};", s.MouseStatistics.LeftMouseClicks);
+            w.Write("{0:0};", s.MouseStatistics.MiddleMouseClicks);
+            w.Write("{0:0};", s.MouseStatistics.RightMouseClicks);
+            w.Write("{0:0};", s.MouseStatistics.MouseDoubleClicks);
+            w.Write("{0:0.0};", s.MouseStatistics.MouseDistance);
+            w.Write("{0:0};", s.MouseStatistics.MouseWheelDistance);
+            w.Write("{0:0};", s.MouseStatistics.MouseClicksPerMinute);
+            w.WriteLine();
+
+            w.Close();
         }
 
         private static void SaveBitmap(BitmapSource bmp, string fileName)
@@ -229,13 +262,13 @@ Windows Explorer";
             var sb = new StringBuilder();
             if (s == Statistics)
             {
-                sb.Append(RecordingReport);
+                sb.Append(Report);
                 sb.AppendLine();
                 sb.Append(CreateApplicationReport());
                 sb.AppendLine();
             }
 
-            sb.Append(s.FullReport());
+            sb.Append(s.Report());
             return sb.ToString();
         }
 

@@ -4,12 +4,13 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using UsageStats.Properties;
 
 namespace UsageStats
 {
     public class MouseStatistics : Observable
     {
+        public static double ScreenResolution = 96;
+
         private readonly Brush LeftBrush = new SolidColorBrush(Color.FromArgb(60, 0, 200, 0));
         private readonly Brush MiddleBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 255));
         private readonly Brush RightBrush = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
@@ -53,14 +54,24 @@ namespace UsageStats
         public ScreenBitmap TraceMap { get; set; }
         public ScreenBitmap DragTraceMap { get; set; }
 
-        public string MouseDistanceText
+        public double MouseClicksPerMinute
         {
             get
             {
-                var dpi = Settings.Default.ScreenResolution;
-                if (dpi <= 0) dpi = 96;
-                return String.Format("{0:0.00} m ({1:0.#} dpi)", TotalMouseDistance / dpi * 0.0254,dpi);
+                double min = MouseActivity.TotalSeconds / 60;
+                int clicks = LeftMouseClicks + MiddleMouseClicks + RightMouseClicks;
+                return min > 0 ? clicks / min : 0;
             }
+        }
+
+        public double MouseDistance
+        {
+            get { return TotalMouseDistance / ScreenResolution * 0.0254; }
+        }
+
+        public string MouseDistanceText
+        {
+            get { return String.Format("{0:0.00} m", MouseDistance); }
         }
 
         public override string ToString()

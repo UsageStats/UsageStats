@@ -102,6 +102,18 @@ namespace UsageStats
             }
         }
 
+        [Category("Maps|Mouse maps")]
+        [DisplayName("Display date on the maps")]
+        public bool DisplayDate
+        {
+            get { return settings.DisplayDate; }
+            set
+            {
+                settings.DisplayDate = value;
+                RaisePropertyChanged("DisplayDate");
+            }
+        }
+
         [Category("Window|Settings")]
         [Slidable(1, 10)]
         [DisplayName("Keep window always on top")]

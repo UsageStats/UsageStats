@@ -107,7 +107,7 @@ namespace UsageStats.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AlwaysOnTop {
@@ -128,6 +128,18 @@ namespace UsageStats.Properties {
             }
             set {
                 this["ScreenResolution"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DisplayDate {
+            get {
+                return ((bool)(this["DisplayDate"]));
+            }
+            set {
+                this["DisplayDate"] = value;
             }
         }
     }
