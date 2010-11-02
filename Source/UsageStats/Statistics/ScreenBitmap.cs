@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using UsageStats.Properties;
@@ -13,14 +14,14 @@ namespace UsageStats
         {
             double w = SystemParameters.PrimaryScreenWidth;
             double h = SystemParameters.PrimaryScreenHeight;
-            Scale = width/w;
-            var height = (int) (h*Scale);
+            Scale = width / w;
+            var height = (int)(h * Scale);
 
             int dpi = 96;
             rtb = new RenderTargetBitmap(width, height, dpi, dpi, PixelFormats.Pbgra32);
 
             var dv = new DrawingVisual();
-            using (DrawingContext ctx = dv.RenderOpen())
+            using (var ctx = dv.RenderOpen())
             {
                 ctx.DrawRectangle(Brushes.White, null, new Rect(0, 0, width, height));
             }
@@ -37,7 +38,7 @@ namespace UsageStats
 
         public double PointRadius
         {
-            get { return Settings.Default.MouseDownSize/2; }
+            get { return Settings.Default.MouseDownSize / 2; }
         }
 
         public double StrokeThickness
@@ -51,13 +52,13 @@ namespace UsageStats
 
         private Point Transform(Point pt)
         {
-            return new Point(pt.X*Scale, pt.Y*Scale);
+            return new Point(pt.X * Scale, pt.Y * Scale);
         }
 
         public void AddPoint(Point pt, Brush fill)
         {
             var dv = new DrawingVisual();
-            using (DrawingContext ctx = dv.RenderOpen())
+            using (var ctx = dv.RenderOpen())
             {
                 ctx.DrawEllipse(fill, null, Transform(pt), PointRadius, PointRadius);
             }
@@ -68,11 +69,24 @@ namespace UsageStats
         {
             var dv = new DrawingVisual();
             var pen = new Pen(Stroke, StrokeThickness);
-            using (DrawingContext ctx = dv.RenderOpen())
+            using (var ctx = dv.RenderOpen())
             {
                 ctx.DrawLine(pen, Transform(pt1), Transform(pt2));
             }
             rtb.Render(dv);
+        }
+
+        public void DrawDate(string text)
+        {
+            var dv = new DrawingVisual();
+            RenderOptions.SetClearTypeHint(dv, ClearTypeHint.Enabled);
+            using (var ctx = dv.RenderOpen())
+            {
+                var ft = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 18, Brushes.Black);
+                ctx.DrawText(ft, new Point(5, 5));
+            }
+            rtb.Render(dv);
+
         }
     }
 }

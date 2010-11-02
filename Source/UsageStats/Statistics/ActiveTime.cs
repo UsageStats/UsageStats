@@ -53,7 +53,7 @@ namespace UsageStats
 
         public override string ToString()
         {
-            string s = String.Format("{0:00}:{1:00}:{2:00}", TimeActive.Hours, TimeActive.Minutes, TimeActive.Seconds);
+            string s = TimeActive.ToShortString();
             if (RelativeTo != null && RelativeTo.TimeActive.TotalSeconds > 0)
             {
                 double p = TimeActive.TotalSeconds/RelativeTo.TimeActive.TotalSeconds*100;

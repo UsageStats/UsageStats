@@ -29,5 +29,8 @@
     <Setting Name="ScreenResolution" Type="System.Double" Scope="User">
       <Value Profile="(Default)">96</Value>
     </Setting>
+	<Setting Name="DisplayDate" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

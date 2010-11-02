@@ -21,6 +21,15 @@ namespace UsageStats
         public CountPerHour KeyCountPerHour { get; set; }
         public Histogram TypingSpeed { get; set; }
 
+        public double KeyStrokesPerMinute
+        {
+            get
+            {
+                double min = KeyboardActivity.TotalSeconds / 60;
+                return min > 0 ? KeyStrokes / min : 0;
+            }
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -40,7 +49,7 @@ namespace UsageStats
                 foreach (var kvp in list)
                 {
                     double p = KeyStrokes > 0 ? 1.0*kvp.Value/KeyStrokes : 0;
-                    sb.AppendLine(String.Format(" {0} {1:####} {2:###%}", kvp.Key.PadRight(longest), kvp.Value, p));
+                    sb.AppendLine(String.Format(" {0} {1:####} {2:0.0%}", kvp.Key.PadRight(longest), kvp.Value, p));
                 }
             }
             return sb.ToString();
