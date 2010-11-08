@@ -6,6 +6,7 @@ namespace UsageStats
 {
     // http://blogs.msdn.com/toub/archive/2006/05/03/589468.aspx
     // http://msdn.microsoft.com/en-us/library/ms644959(VS.85).aspx
+    // http://msdn.microsoft.com/en-us/library/ms644986(v=VS.85).aspx
 
     public enum MouseMessages
     {
@@ -64,6 +65,16 @@ namespace UsageStats
             }
         }
 
+        // If nCode is less than zero, the hook procedure must return the value returned by CallNextHookEx.
+
+        // If nCode is greater than or equal to zero, and the hook procedure did not process the message, 
+        // it is highly recommended that you call CallNextHookEx and return the value it returns; otherwise, 
+        // other applications that have installed WH_MOUSE_LL hooks will not receive hook notifications and 
+        // may behave incorrectly as a result. If the hook procedure processed the message, it may return 
+        // a nonzero value to prevent the system from passing the message to the rest of the hook chain or 
+        // the target window procedure.
+        
+            
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
@@ -71,13 +82,7 @@ namespace UsageStats
                 if (_handler != null)
                     _handler(wParam, lParam);
             }
-
-            /* if (nCode >= 0 &&
-                MouseMessages.WM_LBUTTONDOWN == (MouseMessages)wParam)
-            {
-                MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-                Console.WriteLine(hookStruct.pt.x + ", " + hookStruct.pt.y);
-            }*/
+           
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 

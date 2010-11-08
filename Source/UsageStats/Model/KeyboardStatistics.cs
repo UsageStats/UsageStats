@@ -17,8 +17,34 @@ namespace UsageStats
 
         public int KeyStrokes { get; set; }
         public Dictionary<string, int> KeyUsage { get; set; }
+
+
         public ActiveTime KeyboardActivity { get; set; }
         public CountPerHour KeyCountPerHour { get; set; }
+
+        // todo: should not be neccessary to duplicate these dictionaries in order to get the BarChart ItemsControl to work?
+        public Dictionary<string, int> KeyUsageList
+        {
+            get
+            {
+                var d = new Dictionary<string, int>();
+                foreach (var kvp in KeyUsage.OrderByDescending(kvp => kvp.Value))
+                    d.Add(kvp.Key, kvp.Value);
+                return d;
+            }
+        }
+
+        public Dictionary<string, int> KeyCountPerHourList
+        {
+            get
+            {
+                var d = new Dictionary<string, int>();
+                foreach (var kvp in KeyCountPerHour)
+                    d.Add(kvp.Key.ToString(), kvp.Value);
+                return d;
+            }
+        }
+
         public Histogram TypingSpeed { get; set; }
 
         public double KeyStrokesPerMinute
@@ -48,7 +74,7 @@ namespace UsageStats
                 int longest = list.Max(kvp => kvp.Key.ToString().Length);
                 foreach (var kvp in list)
                 {
-                    double p = KeyStrokes > 0 ? 1.0*kvp.Value/KeyStrokes : 0;
+                    double p = KeyStrokes > 0 ? 1.0 * kvp.Value / KeyStrokes : 0;
                     sb.AppendLine(String.Format(" {0} {1:####} {2:0.0%}", kvp.Key.PadRight(longest), kvp.Value, p));
                 }
             }
@@ -58,17 +84,24 @@ namespace UsageStats
         public void KeyDown(string key)
         {
             AddKeyUsage(key);
+            RaisePropertyChanged("KeyUsageList");
 
             double sec = KeyboardActivity.Update(Statistics.InactivityThreshold);
+            RaisePropertyChanged("KeyboardActivity");
 
             if (sec < 4 && sec > 0.1)
             {
-                double perMinute = 60/sec;
+                double perMinute = 60 / sec;
                 TypingSpeed.Add(perMinute);
             }
+            RaisePropertyChanged("TypingSpeed");
 
             KeyStrokes++;
+            RaisePropertyChanged("KeyStrokes");
+
             KeyCountPerHour.Increase();
+            RaisePropertyChanged("KeyCountPerHour");
+            RaisePropertyChanged("KeyCountPerHourList");
         }
 
         private void AddKeyUsage(string key)
