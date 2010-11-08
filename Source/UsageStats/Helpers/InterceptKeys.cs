@@ -46,7 +46,7 @@ namespace UsageStats
             if (nCode >= 0 && wParam == (IntPtr) WM_KEYDOWN)
             {
                 int vkCode = Marshal.ReadInt32(lParam);
-                Console.Write((char) vkCode);
+                // Console.Write((char) vkCode);
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }

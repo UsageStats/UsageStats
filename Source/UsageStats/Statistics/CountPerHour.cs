@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace UsageStats
@@ -6,7 +8,7 @@ namespace UsageStats
     /// <summary>
     /// Count occurences and report per hour of day.
     /// </summary>
-    public class CountPerHour
+    public class CountPerHour : IEnumerable<KeyValuePair<int,int>>
     {
         public CountPerHour(TimePerHour reference = null)
         {
@@ -53,6 +55,17 @@ namespace UsageStats
                 }
             }
             return sb.ToString();
+        }
+
+        public IEnumerator<KeyValuePair<int, int>> GetEnumerator()
+        {
+            for (int i=0;i<Count.Length;i++)
+                yield return new KeyValuePair<int, int>(i,Count[i]);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
