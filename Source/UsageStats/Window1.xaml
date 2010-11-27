@@ -118,10 +118,10 @@
                     </TabItem>
                 </TabControl>
             </TabItem>
-            <TabItem Header="Keyboard" DataContext="{Binding KeyboardStatistics}">
+            <TabItem Header="Keyboard">
                 <TabControl>
                     <TabItem Header="Report">
-                        <TextBox AcceptsReturn="True" Text="{Binding Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+                        <TextBox AcceptsReturn="True" Text="{Binding KeyboardStatistics, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
                     </TabItem>
                     <!--
                     <TabItem Header="Typing speed">
@@ -146,13 +146,13 @@
                         </dvc:Chart>
                     </TabItem>
                     -->
-                    <TabItem Header="Key frequency">
+                    <TabItem Header="Key frequency" DataContext="{Binding KeyboardStatistics}">
                         <local:BarChart Title="Key frequency" 
                                         ItemsSource="{Binding KeyUsageList}" 
                                         KeyBinding="{Binding Key}"
                                         ValueBinding="{Binding Value}" Height="300"/>
                     </TabItem>
-                    <TabItem Header="Keystrokes per hour">
+                    <TabItem Header="Keystrokes per hour" DataContext="{Binding KeyboardStatistics}">
                         <local:BarChart Title="Keystrokes per hour" 
                                         ItemsSource="{Binding KeyCountPerHourList}"
                                         KeyBinding="{Binding Key}"
