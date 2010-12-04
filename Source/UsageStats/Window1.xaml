@@ -68,10 +68,10 @@
                     </TabItem>-->
                 </TabControl>
             </TabItem>
-            <TabItem Header="Mouse">
+            <TabItem Header="Mouse" DataContext="{Binding MouseStatistics}">
                 <TabControl>
                     <TabItem Header="Report">
-                        <TextBox AcceptsReturn="True" Text="{Binding MouseStatistics, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+                        <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
                     </TabItem>
                     <!--
                     <TabItem Header="Double click speed">
@@ -98,65 +98,60 @@
                     -->
                     <TabItem Header="Clicks">
                         <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Image Source="{Binding MouseStatistics.ClickMap.Source}"/>
+                            <Image Source="{Binding ClickMap.Source}"/>
                         </Border>
                     </TabItem>
                     <TabItem Header="Double-clicks">
                         <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Image Source="{Binding MouseStatistics.DoubleClickMap.Source}"/>
+                            <Image Source="{Binding DoubleClickMap.Source}"/>
                         </Border>
                     </TabItem>
                     <TabItem Header="Tracks">
                         <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Image Source="{Binding MouseStatistics.TraceMap.Source}"/>
+                            <Image Source="{Binding TraceMap.Source}"/>
                         </Border>
                     </TabItem>
                     <TabItem Header="Drag tracks">
                         <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Image Source="{Binding MouseStatistics.DragTraceMap.Source}"/>
+                            <Image Source="{Binding DragTraceMap.Source}"/>
                         </Border>
+                    </TabItem>
+                    <TabItem Header="Clicks">
+                        <local:BarChart Title="Mouse clicks per hour" 
+                                        ItemsSource="{Binding ClicksPerHourList}"
+                                        KeyBinding="{Binding Key}"
+                                        ValueBinding="{Binding Value}" Height="300"/>
+                    </TabItem>
+                    <TabItem Header="Speed">
+                        <local:BarChart Title="Movement speed" HorizontalAxisTitle="pixels/sec"
+                                        ItemsSource="{Binding MovementSpeedList}"
+                                        KeyBinding="{Binding Key}"
+                                        ValueBinding="{Binding Value}" Height="300"/>
+                    </TabItem>
+                    <TabItem Header="Double-clicks">
+                        <local:BarChart Title="Double-click time" HorizontalAxisTitle="ms" 
+                                        ItemsSource="{Binding DoubleClickTimeList}"
+                                        KeyBinding="{Binding Key}"
+                                        ValueBinding="{Binding Value}" Height="300"/>
                     </TabItem>
                 </TabControl>
             </TabItem>
-            <TabItem Header="Keyboard">
+            <TabItem Header="Keyboard" DataContext="{Binding KeyboardStatistics}">
                 <TabControl>
                     <TabItem Header="Report">
-                        <TextBox AcceptsReturn="True" Text="{Binding KeyboardStatistics, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
-                    </TabItem>
-                    <!--
-                    <TabItem Header="Typing speed">
-                        <dvc:Chart>
-                            <dvc:Chart.Series>
-                                <dvc:ColumnSeries ItemsSource="{Binding KeyboardStatistics.TypingSpeed.Data}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
-                            </dvc:Chart.Series>
-                        </dvc:Chart>
-                    </TabItem>
-                    <TabItem Header="Key frequency">
-                        <dvc:Chart>
-                            <dvc:Chart.Series>
-                                <dvc:ColumnSeries ItemsSource="{Binding KeyboardStatistics.KeyUsage}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
-                            </dvc:Chart.Series>
-                        </dvc:Chart>
-                    </TabItem>
-                    <TabItem Header="Keys per hour">
-                        <dvc:Chart>
-                            <dvc:Chart.Series>
-                                <dvc:ColumnSeries ItemsSource="{Binding KeyboardStatistics.KeyCountPerHour.Values}" IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
-                            </dvc:Chart.Series>
-                        </dvc:Chart>
-                    </TabItem>
-                    -->
-                    <TabItem Header="Key frequency" DataContext="{Binding KeyboardStatistics}">
+                        <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+                    </TabItem>                   
+                    <TabItem Header="Keys">
                         <local:BarChart Title="Key frequency" 
-                                        ItemsSource="{Binding KeyUsageList}" 
-                                        KeyBinding="{Binding Key}"
-                                        ValueBinding="{Binding Value}" Height="300"/>
+                                        ItemsSource="{Binding KeyUsageList}" Height="300"/>
                     </TabItem>
-                    <TabItem Header="Keystrokes per hour" DataContext="{Binding KeyboardStatistics}">
+                    <TabItem Header="Keystrokes">
                         <local:BarChart Title="Keystrokes per hour" 
-                                        ItemsSource="{Binding KeyCountPerHourList}"
-                                        KeyBinding="{Binding Key}"
-                                        ValueBinding="{Binding Value}" Height="300"/>
+                                        ItemsSource="{Binding KeyCountPerHourList}" Height="300"/>
+                    </TabItem>
+                    <TabItem Header="Speed">
+                        <local:BarChart Title="Typing speed" HorizontalAxisTitle="strokes/min"
+                                        ItemsSource="{Binding TypingSpeedList}" Height="300"/>
                     </TabItem>
                 </TabControl>
             </TabItem>
