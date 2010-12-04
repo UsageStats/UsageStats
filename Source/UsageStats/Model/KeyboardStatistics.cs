@@ -27,10 +27,7 @@ namespace UsageStats
         {
             get
             {
-                var d = new Dictionary<string, int>();
-                foreach (var kvp in KeyUsage.OrderByDescending(kvp => kvp.Value))
-                    d.Add(kvp.Key, kvp.Value);
-                return d;
+                return KeyUsage.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
         }
 
@@ -38,11 +35,13 @@ namespace UsageStats
         {
             get
             {
-                var d = new Dictionary<string, int>();
-                foreach (var kvp in KeyCountPerHour)
-                    d.Add(kvp.Key.ToString(), kvp.Value);
-                return d;
+                return KeyCountPerHour.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
             }
+        }
+
+        public Dictionary<string, int> TypingSpeedList
+        {
+            get { return TypingSpeed.Data.ToDictionary(v => v.Key.ToString(), v => v.Value); }
         }
 
         public Histogram TypingSpeed { get; set; }
@@ -56,11 +55,18 @@ namespace UsageStats
             }
         }
 
+        public string Report
+        {
+            get { return ToString(); }
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
             sb.AppendLine(String.Format(" Keystrokes:    {0}", KeyStrokes));
             sb.AppendLine(String.Format(" Activity:      {0}", KeyboardActivity));
+            sb.AppendLine();
+            sb.AppendLine(String.Format(" Average speed: {0:0} keystrokes/min", TypingSpeed.Average));
             sb.AppendLine();
             //sb.AppendLine(" Typing speed (keystrokes per minute):");
             //sb.AppendLine(TypingSpeed.Report());
@@ -68,7 +74,7 @@ namespace UsageStats
             sb.AppendLine(" Keystrokes per hour:");
             sb.AppendLine(KeyCountPerHour.Report(false));
             sb.AppendLine();
-            IOrderedEnumerable<KeyValuePair<string, int>> list = KeyUsage.ToList().OrderByDescending(kvp => kvp.Value);
+            var list = KeyUsage.ToList().OrderByDescending(kvp => kvp.Value);
             if (list.Count() > 0)
             {
                 int longest = list.Max(kvp => kvp.Key.ToString().Length);
@@ -95,6 +101,7 @@ namespace UsageStats
                 TypingSpeed.Add(perMinute);
             }
             RaisePropertyChanged("TypingSpeed");
+            RaisePropertyChanged("TypingSpeedList");
 
             KeyStrokes++;
             RaisePropertyChanged("KeyStrokes");
@@ -102,6 +109,7 @@ namespace UsageStats
             KeyCountPerHour.Increase();
             RaisePropertyChanged("KeyCountPerHour");
             RaisePropertyChanged("KeyCountPerHourList");
+            RaisePropertyChanged("Report");
         }
 
         private void AddKeyUsage(string key)

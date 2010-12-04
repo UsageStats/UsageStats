@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -11,21 +13,21 @@ namespace UsageStats
     {
         public static double ScreenResolution = 96;
 
-        private readonly Brush LeftBrush = new SolidColorBrush(Color.FromArgb(60, 0, 200, 0));
-        private readonly Brush MiddleBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 255));
-        private readonly Brush RightBrush = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
+        private readonly Brush leftBrush = new SolidColorBrush(Color.FromArgb(60, 0, 200, 0));
+        private readonly Brush middleBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 255));
+        private readonly Brush rightBrush = new SolidColorBrush(Color.FromArgb(60, 255, 0, 0));
         private readonly Stopwatch moveTimer = new Stopwatch();
-        private DateTime _lastMouseDownTime;
+        private DateTime lastMouseDownTime;
         private bool isLeftButtonDown;
         private Point lastPoint = WindowHelper.GetCursorPos();
         private bool wasLeftButtonDown;
 
         public MouseStatistics(ActiveTime total, TimePerHour activityPerHour, double screenMapScale)
         {
-            ClicksPerCountPerHour = new CountPerHour(activityPerHour);
-            DistancePerCountPerHour = new CountPerHour(activityPerHour);
+            ClicksPerHour = new CountPerHour(activityPerHour);
+            DistancePerHour = new CountPerHour(activityPerHour);
             MouseActivity = new ActiveTime(total);
-            DoubleClickSpeed = new Histogram(0.01);
+            DoubleClickTime = new Histogram(0.01);
             MovementSpeed = new Histogram(50);
             MovementDirection = new Histogram(45);
 
@@ -42,10 +44,10 @@ namespace UsageStats
         public int MouseDoubleClicks { get; set; }
         public double TotalMouseDistance { get; set; }
         public double MouseWheelDistance { get; set; }
-        public CountPerHour ClicksPerCountPerHour { get; set; }
-        public CountPerHour DistancePerCountPerHour { get; set; }
+        public CountPerHour ClicksPerHour { get; set; }
+        public CountPerHour DistancePerHour { get; set; }
         public ActiveTime MouseActivity { get; set; }
-        public Histogram DoubleClickSpeed { get; set; }
+        public Histogram DoubleClickTime { get; set; }
         public Histogram MovementSpeed { get; set; }
         public Histogram MovementDirection { get; set; }
 
@@ -74,6 +76,26 @@ namespace UsageStats
             get { return String.Format("{0:0.00} m", MouseDistance); }
         }
 
+        public Dictionary<string, int> ClicksPerHourList
+        {
+            get { return ClicksPerHour.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value); }
+        }
+
+        public Dictionary<string, int> MovementSpeedList
+        {
+            get { return MovementSpeed.Data.ToDictionary(v => v.Key.ToString(), v => v.Value); }
+        }
+
+        public Dictionary<string, int> DoubleClickTimeList
+        {
+            get { return DoubleClickTime.Data.ToDictionary(v => v.Key.ToString(), v => v.Value); }
+        }
+
+        public string Report
+        {
+            get { return ToString(); }
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -86,7 +108,10 @@ namespace UsageStats
             sb.AppendLine(String.Format(" Activity:      {0}", MouseActivity));
             sb.AppendLine();
             sb.AppendLine(" Clicks per hour:");
-            sb.AppendLine(ClicksPerCountPerHour.Report(false));
+            sb.AppendLine(ClicksPerHour.Report(false));
+            sb.AppendLine();
+            sb.AppendLine(String.Format(" Average double-click time: {0:0} ms", DoubleClickTime.Average * 1000));
+            sb.AppendLine(String.Format(" Average movement speed:    {0:0} pixel/sec", MovementSpeed.Average));
             sb.AppendLine();
             //sb.AppendLine(" Double click speed:");
             //sb.AppendLine(DoubleClickSpeed.Report());
@@ -101,22 +126,23 @@ namespace UsageStats
 
         public void MouseDown(MouseButton mb)
         {
-            Brush brush = LeftBrush;
+            var brush = leftBrush;
             if (mb == MouseButton.Middle)
-                brush = MiddleBrush;
+                brush = middleBrush;
             if (mb == MouseButton.Right)
-                brush = RightBrush;
+                brush = rightBrush;
 
             ClickMap.AddPoint(lastPoint, brush);
-            double timeSinceLastClick = (DateTime.Now - _lastMouseDownTime).TotalSeconds;
+            double timeSinceLastClick = (DateTime.Now - lastMouseDownTime).TotalSeconds;
             if (timeSinceLastClick < 0.5)
             {
                 MouseDoubleClicks++;
-                DoubleClickSpeed.Add(timeSinceLastClick);
+                DoubleClickTime.Add(timeSinceLastClick);
                 DoubleClickMap.AddPoint(lastPoint, brush);
+                RaisePropertyChanged("DoubleClickTimeList");
             }
 
-            _lastMouseDownTime = DateTime.Now;
+            lastMouseDownTime = DateTime.Now;
 
             switch (mb)
             {
@@ -131,8 +157,10 @@ namespace UsageStats
                     RightMouseClicks++;
                     break;
             }
-            ClicksPerCountPerHour.Increase();
+            ClicksPerHour.Increase();
             RegisterActivity();
+            RaisePropertyChanged("ClicksPerHourList");
+            RaisePropertyChanged("Report");
         }
 
         public void MouseUp(MouseButton mb)
@@ -149,6 +177,7 @@ namespace UsageStats
         {
             MouseWheelDistance += 1;
             RegisterActivity();
+            RaisePropertyChanged("Report");
         }
 
         public void MouseDblClk()
@@ -175,6 +204,7 @@ namespace UsageStats
             {
                 MovementSpeed.Add(speed);
                 RaisePropertyChanged("MovementSpeed");
+                RaisePropertyChanged("MovementSpeedList");
             }
 
             MovementDirection.Add(direction);
@@ -190,6 +220,7 @@ namespace UsageStats
 
             lastPoint = pt;
             wasLeftButtonDown = isLeftButtonDown;
+            RaisePropertyChanged("Report");
         }
     }
 }

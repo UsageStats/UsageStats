@@ -8,7 +8,7 @@ namespace UsageStats
     public class Histogram
     {
         private int count;
-        public Dictionary<int, int> data;
+        private readonly Dictionary<int, int> data;
 
         private double sum;
 
@@ -29,7 +29,7 @@ namespace UsageStats
 
         public double Average
         {
-            get { return count != 0 ? sum/count : 0; }
+            get { return count != 0 ? sum / count : 0; }
         }
 
         public IEnumerable<KeyValuePair<double, int>> Data
@@ -39,12 +39,12 @@ namespace UsageStats
 
         public int ToIndex(double value)
         {
-            return (int) (Math.Floor((value - IntervalOrigin)/IntervalWidth + 0.5));
+            return (int)(Math.Floor((value - IntervalOrigin) / IntervalWidth + 0.5));
         }
 
         public double ToValue(int index)
         {
-            return IntervalOrigin + IntervalWidth*index;
+            return IntervalOrigin + IntervalWidth * index;
         }
 
         public void Add(double value)

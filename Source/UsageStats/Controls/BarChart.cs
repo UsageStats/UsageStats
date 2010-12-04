@@ -26,6 +26,16 @@ namespace UsageStats
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(BarChart), new UIPropertyMetadata(null));
 
+        public string HorizontalAxisTitle
+        {
+            get { return (string)GetValue(HorizontalAxisTitleProperty); }
+            set { SetValue(HorizontalAxisTitleProperty, value); }
+        }
+
+        public static readonly DependencyProperty HorizontalAxisTitleProperty =
+            DependencyProperty.Register("HorizontalAxisTitle", typeof(string), typeof(BarChart), new UIPropertyMetadata(null));
+
+        
         public double ScaleY
         {
             get { return (double)GetValue(ScaleYProperty); }
@@ -82,12 +92,14 @@ namespace UsageStats
 
         private ItemsControl itemsControl;
         private TextBlock titleControl;
+        private TextBlock horizontalAxisTitleControl;
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.itemsControl = this.GetTemplateChild("PART_Items") as ItemsControl;
             this.titleControl = this.GetTemplateChild("PART_Title") as TextBlock;
+            this.horizontalAxisTitleControl = this.GetTemplateChild("PART_HorizontalAxisTitle") as TextBlock;
             itemsControl.SizeChanged += OnSizeChanged;
         }
 
