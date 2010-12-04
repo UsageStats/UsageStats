@@ -15,8 +15,10 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock x:Name="PART_Title" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" Padding="10" Text="{TemplateBinding Title}"/>
+                            <TextBlock x:Name="PART_HorizontalAxisTitle" Grid.Row="2" HorizontalAlignment="Center" Padding="2" Text="{TemplateBinding HorizontalAxisTitle}"/>
                             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                                 <ItemsControl x:Name="PART_Items" ItemsSource="{TemplateBinding ItemsSource}" Padding="4 0 4 4" HorizontalAlignment="Center">
                                     <ItemsControl.ItemsPanel>
