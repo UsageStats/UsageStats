@@ -47,11 +47,11 @@ namespace UsageStats
                     if (Reference != null && Reference.PerHour[i].TotalSeconds > 0)
                     {
                         double ts = Reference.PerHour[i].TotalMinutes;
-                        sb.Append(String.Format("  {0:00}:    {1}", i, Count[i]));
+                        sb.Append(String.Format("  {0:00}:    {1:#####}", i, Count[i]));
                         sb.AppendLine(String.Format("     {0:0.0}/min", Count[i]/ts));
                     }
                     else
-                        sb.AppendLine(String.Format("  {0:00}:    {1}", i, Count[i]));
+                        sb.AppendLine(String.Format("  {0:00}:    {1:#####}", i, Count[i]));
                 }
             }
             return sb.ToString();
