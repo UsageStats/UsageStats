@@ -24,7 +24,7 @@ namespace UsageStats
 
         public static implicit operator POINT(Point p)
         {
-            return new POINT((int) p.X, (int) p.Y);
+            return new POINT((int)p.X, (int)p.Y);
         }
     }
 
@@ -35,7 +35,7 @@ namespace UsageStats
         private static extern bool GetCursorPos(out POINT lpPoint);
 
         [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
+        public static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);

@@ -117,22 +117,22 @@
                         </Border>
                     </TabItem>
                     <TabItem Header="Clicks">
-                        <local:BarChart Title="Mouse clicks per hour" 
+                        <local:HorizontalBarChart Title="Mouse clicks per hour" 
                                         ItemsSource="{Binding ClicksPerHourList}"
                                         KeyBinding="{Binding Key}"
-                                        ValueBinding="{Binding Value}" Height="300"/>
+                                        ValueBinding="{Binding Value}"/>
                     </TabItem>
                     <TabItem Header="Speed">
-                        <local:BarChart Title="Movement speed" HorizontalAxisTitle="pixels/sec"
+                        <local:HorizontalBarChart Title="Movement speed" VerticalAxisTitle="pixels/sec"
                                         ItemsSource="{Binding MovementSpeedList}"
                                         KeyBinding="{Binding Key}"
-                                        ValueBinding="{Binding Value}" Height="300"/>
+                                        ValueBinding="{Binding Value}"/>
                     </TabItem>
                     <TabItem Header="Double-clicks">
-                        <local:BarChart Title="Double-click time" HorizontalAxisTitle="ms" 
+                        <local:HorizontalBarChart Title="Double-click time" VerticalAxisTitle="ms" 
                                         ItemsSource="{Binding DoubleClickTimeList}"
                                         KeyBinding="{Binding Key}"
-                                        ValueBinding="{Binding Value}" Height="300"/>
+                                        ValueBinding="{Binding Value}"/>
                     </TabItem>
                 </TabControl>
             </TabItem>
@@ -142,16 +142,16 @@
                         <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
                     </TabItem>                   
                     <TabItem Header="Keys">
-                        <local:BarChart Title="Key frequency" 
-                                        ItemsSource="{Binding KeyUsageList}" Height="300"/>
+                        <local:HorizontalBarChart Title="Key frequency" 
+                                        ItemsSource="{Binding KeyUsageList}"/>
                     </TabItem>
                     <TabItem Header="Keystrokes">
-                        <local:BarChart Title="Keystrokes per hour" 
-                                        ItemsSource="{Binding KeyCountPerHourList}" Height="300"/>
+                        <local:HorizontalBarChart Title="Keystrokes per hour" 
+                                        ItemsSource="{Binding KeyCountPerHourList}"/>
                     </TabItem>
                     <TabItem Header="Speed">
-                        <local:BarChart Title="Typing speed" HorizontalAxisTitle="strokes/min"
-                                        ItemsSource="{Binding TypingSpeedList}" Height="300"/>
+                        <local:HorizontalBarChart Title="Typing speed" VerticalAxisTitle="keystrokes/min"
+                                        ItemsSource="{Binding TypingSpeedList}"/>
                     </TabItem>
                 </TabControl>
             </TabItem>
