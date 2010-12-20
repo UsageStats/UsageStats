@@ -87,7 +87,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Key}" Margin="2"/>
                                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
-                                                    <Rectangle Height="30" Width="{Binding Value}" Margin="2" Fill="Green">
+                                                    <Rectangle Height="20" Width="{Binding Value}" Margin="2" Fill="Green">
                                                         <Rectangle.LayoutTransform>
                                                             <ScaleTransform ScaleX="{Binding Scale, RelativeSource={RelativeSource AncestorType={x:Type local:HorizontalBarChart}}}"/>
                                                         </Rectangle.LayoutTransform>

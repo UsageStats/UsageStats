@@ -14,8 +14,10 @@ namespace UsageStats
             ActivityPerHour = new TimePerHour();
             KeyboardStatistics = new KeyboardStatistics(Activity, ActivityPerHour);
             MouseStatistics = new MouseStatistics(Activity, ActivityPerHour, 1);
-            InterruptionsPerCountPerHour = new CountPerHour(ActivityPerHour);
+            InterruptionsPerHour = new CountPerHour();
+            WindowSwitchesPerHour = new CountPerHour();
         }
+        public int WindowSwitches { get; set; }
 
         public static double InactivityThreshold
         {
@@ -32,7 +34,8 @@ namespace UsageStats
         public KeyboardStatistics KeyboardStatistics { get; set; }
         public MouseStatistics MouseStatistics { get; set; }
 
-        public CountPerHour InterruptionsPerCountPerHour { get; set; }
+        public CountPerHour WindowSwitchesPerHour { get; set; }
+        public CountPerHour InterruptionsPerHour { get; set; }
         public TimePerHour ActivityPerHour { get; set; }
 
         public double MouseKeyboardRatio
@@ -58,7 +61,12 @@ namespace UsageStats
             sb.AppendLine();
 
             sb.AppendLine("INTERRUPTIONS PER HOUR");
-            sb.Append(InterruptionsPerCountPerHour.Report(false));
+            sb.Append(InterruptionsPerHour.Report(false));
+            sb.AppendLine();
+
+            sb.AppendLine("WINDOW SWITCHES PER HOUR");
+            sb.Append(WindowSwitchesPerHour.Report(false));
+            sb.AppendLine(String.Format("  Total: {0}", WindowSwitches));
             sb.AppendLine();
 
             return sb.ToString();
@@ -85,12 +93,19 @@ namespace UsageStats
         {
             double secondsSinceLastCheck = Activity.Update(InactivityThreshold);
             if (secondsSinceLastCheck > InterruptionThreshold)
-                InterruptionsPerCountPerHour.Add(1);
+                InterruptionsPerHour.Add(1);
             if (secondsSinceLastCheck < InactivityThreshold)
             {
                 ActivityPerHour.Add(TimeSpan.FromSeconds(secondsSinceLastCheck));
             }
             RaisePropertyChanged("Activity");
+        }
+
+        public void RegisterWindowSwitch()
+        {
+            WindowSwitches++;
+            RaisePropertyChanged("WindowSwitches");
+            WindowSwitchesPerHour.Add(1);
         }
 
         public void KeyDown(string key)

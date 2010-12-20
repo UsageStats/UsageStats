@@ -102,16 +102,14 @@ namespace UsageStats
             sb.AppendLine(String.Format(" Left clicks:   {0}", LeftMouseClicks));
             sb.AppendLine(String.Format(" Right clicks:  {0}", RightMouseClicks));
             sb.AppendLine(String.Format(" Middle clicks: {0}", MiddleMouseClicks));
-            sb.AppendLine(String.Format(" Double-clicks: {0}", MouseDoubleClicks));
-            sb.AppendLine(String.Format(" Distance:      {0}", MouseDistanceText));
+            sb.AppendLine(String.Format(" Double-clicks: {0} ({1:0} ms)", MouseDoubleClicks, DoubleClickTime.Average * 1000));
+            sb.AppendLine(String.Format(" Distance:      {0} ({1:0} pixels)", MouseDistanceText, TotalMouseDistance));
+            sb.AppendLine(String.Format(" Average speed: {0:0} pixels/sec", MovementSpeed.Average));
             sb.AppendLine(String.Format(" Mousewheel:    {0}", MouseWheelDistance));
             sb.AppendLine(String.Format(" Activity:      {0}", MouseActivity));
             sb.AppendLine();
             sb.AppendLine(" Clicks per hour:");
             sb.AppendLine(ClicksPerHour.Report(false));
-            sb.AppendLine();
-            sb.AppendLine(String.Format(" Average double-click time: {0:0} ms", DoubleClickTime.Average * 1000));
-            sb.AppendLine(String.Format(" Average movement speed:    {0:0} pixel/sec", MovementSpeed.Average));
             sb.AppendLine();
             //sb.AppendLine(" Double click speed:");
             //sb.AppendLine(DoubleClickSpeed.Report());
@@ -161,6 +159,9 @@ namespace UsageStats
             RegisterActivity();
             RaisePropertyChanged("ClicksPerHourList");
             RaisePropertyChanged("Report");
+
+            // Only update movement speed graph when clicking...
+            RaisePropertyChanged("MovementSpeedList");
         }
 
         public void MouseUp(MouseButton mb)
@@ -204,7 +205,6 @@ namespace UsageStats
             {
                 MovementSpeed.Add(speed);
                 RaisePropertyChanged("MovementSpeed");
-                RaisePropertyChanged("MovementSpeedList");
             }
 
             MovementDirection.Add(direction);

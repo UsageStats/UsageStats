@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
@@ -41,8 +42,18 @@ Windows Explorer";
 
         public bool AlwaysOnTop { get { return Settings.AlwaysOnTop; } }
 
+        // Call the Assembly GetExecutingAssembly method to get
+        // the name of this application. The first 15 characters of the
+        // application name will be what the Windows OS
+        // sees as the instance name unless you are running multiple instances
+        // of your application.
+        PerformanceCounter bytesInAllHeapsPerformanceCounter;
+
         public MainViewModel()
         {
+            string applicationInstance = Assembly.GetExecutingAssembly().GetName().ToString().Substring(0, 15);
+            bytesInAllHeapsPerformanceCounter = new PerformanceCounter(".NET CLR Memory", "# bytes in all heaps", applicationInstance);
+
             Settings = new SettingsViewModel();
             ScreenResolution = 96;
 
@@ -85,7 +96,6 @@ Windows Explorer";
         }
 
         public double ScreenResolution { get; set; }
-        public int WindowSwitches { get; set; }
 
         public string CurrentApplication { get; set; }
         public Point CurrentPosition { get; set; }
@@ -124,11 +134,17 @@ Windows Explorer";
                 sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
                 TimeSpan duration = LastActivity - FirstActivity;
                 sb.AppendLine(String.Format("Duration:                     {0}", duration.ToShortString()));
-                sb.AppendLine(String.Format("Window switches:              {0}", WindowSwitches));
                 sb.AppendLine();
                 sb.AppendLine(Statistics.ToString());
                 return sb.ToString();
             }
+        }
+
+
+        public void UpdateMemoryCounter()
+        {
+            long totalMemory = GC.GetTotalMemory(false);
+            var bytesInAllHeaps = bytesInAllHeapsPerformanceCounter.RawValue;
         }
 
         private void InitStatistics()
@@ -462,8 +478,7 @@ Windows Explorer";
             var ptr = WindowHelper.GetForegroundWindow();
             if (CurrentWindowPtr != ptr)
             {
-                WindowSwitches++;
-                RaisePropertyChanged("WindowSwitches");
+                Statistics.RegisterWindowSwitch();
             }
             CurrentWindowPtr = ptr;
 
