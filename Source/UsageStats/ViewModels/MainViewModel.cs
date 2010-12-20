@@ -85,6 +85,7 @@ Windows Explorer";
         }
 
         public double ScreenResolution { get; set; }
+        public int WindowSwitches { get; set; }
 
         public string CurrentApplication { get; set; }
         public Point CurrentPosition { get; set; }
@@ -123,6 +124,7 @@ Windows Explorer";
                 sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
                 TimeSpan duration = LastActivity - FirstActivity;
                 sb.AppendLine(String.Format("Duration:                     {0}", duration.ToShortString()));
+                sb.AppendLine(String.Format("Window switches:              {0}", WindowSwitches));
                 sb.AppendLine();
                 sb.AppendLine(Statistics.ToString());
                 return sb.ToString();
@@ -434,6 +436,8 @@ Windows Explorer";
             UpdateFirstAndLast();
         }
 
+        private IntPtr CurrentWindowPtr;
+
         private void TimerTick(object sender, EventArgs e)
         {
             //double deltaTime = watch.ElapsedMilliseconds * 0.001;
@@ -455,6 +459,13 @@ Windows Explorer";
 
             // Update current application (from window title)
             CurrentApplication = WindowHelper.GetForegroundWindowText();
+            var ptr = WindowHelper.GetForegroundWindow();
+            if (CurrentWindowPtr != ptr)
+            {
+                WindowSwitches++;
+                RaisePropertyChanged("WindowSwitches");
+            }
+            CurrentWindowPtr = ptr;
 
             // Update total recording time
             Recording.Update(double.MaxValue);

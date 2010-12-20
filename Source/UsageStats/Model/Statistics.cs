@@ -48,7 +48,7 @@ namespace UsageStats
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine(String.Format("Active time:          {0}",Activity.TimeActive.ToShortString()));
+            sb.AppendLine(String.Format("Active time:                  {0}", Activity.TimeActive.ToShortString()));
             if (MouseKeyboardRatio > 0)
                 sb.AppendLine(String.Format("Mouse/Keyboard ratio: {0:0.0}", MouseKeyboardRatio));
             sb.AppendLine();
