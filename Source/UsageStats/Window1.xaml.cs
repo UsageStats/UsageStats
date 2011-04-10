@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using PropertyEditorLibrary;
+using PropertyTools.Wpf;
 
 namespace UsageStats
 {
@@ -99,11 +99,14 @@ namespace UsageStats
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            var d = new AboutDialog(this);
-            d.Topmost = this.Topmost;
-            d.Image = new BitmapImage(new Uri(@"pack://application:,,,/UsageStats;component/Images/chart.png"));
-            d.Title = "About Application Usage Statistics";
-            d.UpdateStatus = "The program is updated.";
+            var d = new AboutDialog(this)
+                        {
+                            Topmost = this.Topmost,
+                            Image =
+                                new BitmapImage(new Uri(@"pack://application:,,,/UsageStats;component/Images/chart.png")),
+                            Title = "About Application Usage Statistics",
+                            UpdateStatus = "The program is updated."
+                        };
             d.ShowDialog();
         }
 

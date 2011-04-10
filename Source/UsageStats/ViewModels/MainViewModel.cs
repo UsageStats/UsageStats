@@ -202,7 +202,17 @@ Windows Explorer";
                 }
                 prefix += "/";
             }
-            string path = String.Format("{0}Report_{1:yyyy-MM-dd}.txt", prefix, RecordingStarted);
+            string path;
+            switch (Settings.ReportInterval)
+            {
+                case ReportInterval.Hourly:
+                    path = String.Format("{0}Report_{1:yyyy-MM-dd_HHmm}.txt", prefix, RecordingStarted);
+                    break;
+                default:
+                    path = String.Format("{0}Report_{1:yyyy-MM-dd}.txt", prefix, RecordingStarted);
+                    break;
+            }
+
             path = FindUniqueName(path);
             var w = new StreamWriter(path);
             w.Write(CreateReport(s));
@@ -499,8 +509,22 @@ Windows Explorer";
             RaisePropertyChanged("Statistics");
             RaisePropertyChanged("Report");
 
-            // Check if we passed midnight
-            if (RecordingStarted.Day != DateTime.Now.Day)
+            bool saveReport;
+            switch (Settings.ReportInterval)
+            {
+                case ReportInterval.Daily:
+                    // Check if we passed midnight
+                    saveReport = RecordingStarted.Day != DateTime.Now.Day;
+                    break;
+                case ReportInterval.Hourly:
+                    saveReport = RecordingStarted.Hour != DateTime.Now.Hour;
+                    break;
+                default:
+                    saveReport = false;
+                    break;
+            }
+
+            if (saveReport)
             {
                 // Save report for today and reset
                 SaveReports();

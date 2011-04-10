@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
-using PropertyEditorLibrary;
+using PropertyTools.Wpf;
 using UsageStats.Properties;
 
 namespace UsageStats
 {
+    public enum ReportInterval { Daily, Hourly }
+
     public class SettingsViewModel : Observable
     {
         private static Settings settings
@@ -20,6 +22,18 @@ namespace UsageStats
             {
                 settings.ReportPath = value;
                 RaisePropertyChanged("ReportPath");
+            }
+        }
+        
+        [Category("Reports|Output")]
+        [DisplayName("Report interval")]
+        public ReportInterval ReportInterval
+        {
+            get { return settings.ReportInterval; }
+            set
+            {
+                settings.ReportInterval = value;
+                RaisePropertyChanged("ReportInterval");
             }
         }
 
