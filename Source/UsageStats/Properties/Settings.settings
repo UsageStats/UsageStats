@@ -29,8 +29,11 @@
     <Setting Name="ScreenResolution" Type="System.Double" Scope="User">
       <Value Profile="(Default)">96</Value>
     </Setting>
-	<Setting Name="DisplayDate" Type="System.Boolean" Scope="User">
+    <Setting Name="DisplayDate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ReportInterval" Type="UsageStats.ReportInterval" Scope="User">
+      <Value Profile="(Default)">Daily</Value>
     </Setting>
   </Settings>
 </SettingsFile>

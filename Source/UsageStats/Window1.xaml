@@ -1,7 +1,7 @@
 ﻿<Window x:Class="UsageStats.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
-    xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" xmlns:local="clr-namespace:UsageStats" Title="{Binding Title}" Width="640" Height="960" ShowInTaskbar="False"
+    xmlns:local="clr-namespace:UsageStats" Title="{Binding Title}" Width="640" Height="960" ShowInTaskbar="False"
     Topmost="{Binding AlwaysOnTop}"
     Icon="Images/piechart.ico">
     <Window.Resources>
