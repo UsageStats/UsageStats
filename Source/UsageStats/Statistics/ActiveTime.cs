@@ -10,7 +10,7 @@ namespace UsageStats
     {
         public ActiveTime()
         {
-            LastCheck = DateTime.Now;
+            LastActivity = DateTime.Now;
             TimeActive = TimeSpan.Zero;
         }
 
@@ -20,7 +20,7 @@ namespace UsageStats
             RelativeTo = relativeTo;
         }
 
-        public DateTime LastCheck { get; set; }
+        public DateTime LastActivity { get; set; }
         public TimeSpan TimeActive { get; set; }
         public ActiveTime RelativeTo { get; set; }
 
@@ -33,20 +33,25 @@ namespace UsageStats
         {
             TimeActive = TimeActive.Add(TimeSpan.FromSeconds(seconds));
         }
+        
+        public bool IsNewDay()
+        {
+            return DateTime.Now.Day != LastActivity.Day;
+        }
 
         public double Update(double maximumBreak)
         {
             lock (this)
             {
                 var now = DateTime.Now;
-                var ts = now - LastCheck;
+                var ts = now - LastActivity;
                 double sec = ts.TotalSeconds;
                 if (sec < maximumBreak)
                 {
                     Add(ts.TotalSeconds);
                 }
 
-                LastCheck = now;
+                LastActivity = now;
                 return sec;
             }
         }

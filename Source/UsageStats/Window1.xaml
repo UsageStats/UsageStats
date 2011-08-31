@@ -128,6 +128,12 @@
                                         KeyBinding="{Binding Key}"
                                         ValueBinding="{Binding Value}"/>
                     </TabItem>
+                    <TabItem Header="Direction">
+                        <local:HorizontalBarChart Title="Movement direction" VerticalAxisTitle="degrees"
+                                        ItemsSource="{Binding MovementDirectionList}"
+                                        KeyBinding="{Binding Key}"
+                                        ValueBinding="{Binding Value}"/>
+                    </TabItem>
                     <TabItem Header="Double-clicks">
                         <local:HorizontalBarChart Title="Double-click time" VerticalAxisTitle="ms" 
                                         ItemsSource="{Binding DoubleClickTimeList}"

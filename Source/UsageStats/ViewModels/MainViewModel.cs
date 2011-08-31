@@ -52,7 +52,14 @@ Windows Explorer";
         public MainViewModel()
         {
             string applicationInstance = Assembly.GetExecutingAssembly().GetName().ToString().Substring(0, 15);
-            bytesInAllHeapsPerformanceCounter = new PerformanceCounter(".NET CLR Memory", "# bytes in all heaps", applicationInstance);
+            try
+            {
+                bytesInAllHeapsPerformanceCounter = new PerformanceCounter(".NET CLR Memory", "# bytes in all heaps", applicationInstance);
+            }
+            catch (Exception e)
+            {
+                
+            }
 
             Settings = new SettingsViewModel();
             ScreenResolution = 96;
@@ -129,7 +136,7 @@ Windows Explorer";
             {
                 var sb = new StringBuilder();
                 sb.AppendLine(String.Format("Recording started: {0}", RecordingStarted));
-                sb.AppendLine(String.Format("Recording ended:   {0}", Recording.LastCheck));
+                sb.AppendLine(String.Format("Recording ended:   {0}", Recording.LastActivity));
                 sb.AppendLine(String.Format("First activity:    {0}", FirstActivity));
                 sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
                 TimeSpan duration = LastActivity - FirstActivity;
@@ -144,7 +151,10 @@ Windows Explorer";
         public void UpdateMemoryCounter()
         {
             long totalMemory = GC.GetTotalMemory(false);
-            var bytesInAllHeaps = bytesInAllHeapsPerformanceCounter.RawValue;
+            if (bytesInAllHeapsPerformanceCounter!=null)
+            {
+                var bytesInAllHeaps = bytesInAllHeapsPerformanceCounter.RawValue;
+            }
         }
 
         private void InitStatistics()
