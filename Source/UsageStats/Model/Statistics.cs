@@ -91,8 +91,9 @@ namespace UsageStats
 
         private void RegisterActivity()
         {
+            bool isNewDay = Activity.IsNewDay();
             double secondsSinceLastCheck = Activity.Update(InactivityThreshold);
-            if (secondsSinceLastCheck > InterruptionThreshold)
+            if (secondsSinceLastCheck > InterruptionThreshold && !isNewDay)
                 InterruptionsPerHour.Add(1);
             if (secondsSinceLastCheck < InactivityThreshold)
             {

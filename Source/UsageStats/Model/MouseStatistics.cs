@@ -86,6 +86,11 @@ namespace UsageStats
             get { return MovementSpeed.Data.ToDictionary(v => v.Key.ToString(), v => v.Value); }
         }
 
+        public Dictionary<string, int> MovementDirectionList
+        {
+            get { return MovementDirection.Data.ToDictionary(v => v.Key.ToString(), v => v.Value); }
+        }
+
         public Dictionary<string, int> DoubleClickTimeList
         {
             get { return DoubleClickTime.Data.ToDictionary(v => v.Key.ToString(), v => v.Value); }
@@ -162,6 +167,7 @@ namespace UsageStats
 
             // Only update movement speed graph when clicking...
             RaisePropertyChanged("MovementSpeedList");
+            RaisePropertyChanged("MovementDirectionList");
         }
 
         public void MouseUp(MouseButton mb)
