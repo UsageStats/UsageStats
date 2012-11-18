@@ -15,8 +15,6 @@ namespace TimeRecorderStatistics
     using System.Windows.Input;
     using System.Windows.Media;
 
-    using UsageStats;
-
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
@@ -44,14 +42,14 @@ namespace TimeRecorderStatistics
             this.Machines = new ObservableCollection<CheckableItem>();
             this.Categories = new ObservableCollection<CheckableItem>();
 
-            var folder = TimeRecorder.RootFolder;
+            var folder = TimeRecorder.TimeRecorder.RootFolder;
             foreach (var dir in Directory.GetDirectories(folder))
             {
                 this.Machines.Add(new CheckableItem(this.MachineChanged) { Header = Path.GetFileName(dir) });
             }
 
             this.Categories.Add(new CheckableItem(this.CategoryChanged) { Header = "Unknown" });
-            foreach (var cat in TimeRecorder.LoadCategories())
+            foreach (var cat in TimeRecorder.TimeRecorder.LoadCategories())
             {
                 this.Categories.Add(new CheckableItem(this.CategoryChanged) { Header = Path.GetFileName(cat) });
             }

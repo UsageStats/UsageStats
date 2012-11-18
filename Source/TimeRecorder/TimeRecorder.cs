@@ -298,7 +298,7 @@ namespace TimeRecorder
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dropbox\\host.db");
             var lines = File.ReadAllLines(dropboxPath);
             var dropboxBase64Text = Convert.FromBase64String(lines[1]);
-            return Encoding.ASCII.GetString(dropboxBase64Text);
+            return Encoding.UTF8.GetString(dropboxBase64Text);
         }
 
         /// <summary>

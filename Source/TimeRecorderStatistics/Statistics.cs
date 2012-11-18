@@ -9,8 +9,6 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    using UsageStats;
-
     public class Observable : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -78,8 +76,8 @@
 
         public void Add(string machine, IEnumerable<string> categories)
         {
-            var folder = Path.Combine(TimeRecorder.RootFolder, machine);
-            var path = Path.Combine(folder, TimeRecorder.FormatFileName(this.DateTime));
+            var folder = Path.Combine(TimeRecorder.TimeRecorder.RootFolder, machine);
+            var path = Path.Combine(folder, TimeRecorder.TimeRecorder.FormatFileName(this.DateTime));
             if (File.Exists(path))
             {
                 var lines = File.ReadAllLines(path);
