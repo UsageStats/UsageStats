@@ -56,7 +56,7 @@ Windows Explorer";
             {
                 bytesInAllHeapsPerformanceCounter = new PerformanceCounter(".NET CLR Memory", "# bytes in all heaps", applicationInstance);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 
             }

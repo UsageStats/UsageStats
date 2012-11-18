@@ -62,7 +62,7 @@ namespace TimeRecorder
         {
             this.trayIcon = new NotifyIcon
                                 {
-                                    Icon = GetIcon("TimeRecorder.Time.ico"), 
+                                    Icon = GetIcon("TimeRecorder.TimeRecorder.ico"), 
                                     ContextMenu =
                                         new ContextMenu(
                                         new[]
