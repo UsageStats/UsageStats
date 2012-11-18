@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="38C1EB9B-9CBE-4177-BFFB-C567517B88D1"
+             Name="UsageStats"
+             Language="1033"
+             Version="1.2.0"
+             Manufacturer="objo"
+             UpgradeCode="AA855C4B-AF6F-4E95-890B-E0251BDF2460">
+
+        <Package Compressed="yes"/>
+
+        <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
+
+        <Directory Name="SourceDir" Id="TARGETDIR">
+            <Directory Name="ProgramFilesFolder" Id="ProgramFilesFolder">
+                <Directory Name="objo" Id="_1">
+                    <Directory Name="UsageStats" Id="_2">
+                        <Component Id="_1" Guid="3C67513D-01DD-4637-8A68-80971EB9504F">
+                            <File Source="Hardcodet.Wpf.TaskbarNotification.dll"/>
+                            <File Source="nunit.framework.dll"/>
+                            <File Source="..\UsageStats\Images\PieChart.ico"/>
+                            <File Source="PropertyTools.Wpf.dll"/>
+                        </Component>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </Directory>
+
+        <Feature Id="_1" Level="1">
+            <ComponentRef Id="_1"/>
+        </Feature>
+
+    </Product>
+</Wix>
