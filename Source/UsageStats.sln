@@ -5,7 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStats", "UsageStats\Us
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStats.Tests", "UsageStats.Tests\UsageStats.Tests.csproj", "{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "UsageStats.Setup", "UsageStats.Setup\UsageStats.Setup.vdproj", "{6220C02A-089F-4D08-AB65-86FB066F0E95}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Usage Statistics", "Usage Statistics", "{32DFC079-28BD-47C1-86CC-ADBAD0CF45A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Time Recorder", "Time Recorder", "{F1EFBB30-7FF4-47C0-8B95-FA82FE3DE533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorder", "TimeRecorder\TimeRecorder.csproj", "{39CDC360-5C58-4756-90E6-9EAAEC1761B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderStatistics", "TimeRecorderStatistics\TimeRecorderStatistics.csproj", "{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,11 +27,22 @@ Global
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6220C02A-089F-4D08-AB65-86FB066F0E95}.Debug|Any CPU.ActiveCfg = Debug
-		{6220C02A-089F-4D08-AB65-86FB066F0E95}.Release|Any CPU.ActiveCfg = Release
-		{6220C02A-089F-4D08-AB65-86FB066F0E95}.Release|Any CPU.Build.0 = Release
+		{39CDC360-5C58-4756-90E6-9EAAEC1761B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39CDC360-5C58-4756-90E6-9EAAEC1761B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39CDC360-5C58-4756-90E6-9EAAEC1761B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39CDC360-5C58-4756-90E6-9EAAEC1761B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F9FEA872-82CD-4AF4-AA90-DD3ACFDEBD76} = {32DFC079-28BD-47C1-86CC-ADBAD0CF45A3}
+		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA} = {32DFC079-28BD-47C1-86CC-ADBAD0CF45A3}
+		{39CDC360-5C58-4756-90E6-9EAAEC1761B5} = {F1EFBB30-7FF4-47C0-8B95-FA82FE3DE533}
+		{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7} = {F1EFBB30-7FF4-47C0-8B95-FA82FE3DE533}
 	EndGlobalSection
 EndGlobal
