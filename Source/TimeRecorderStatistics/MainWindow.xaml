@@ -1,0 +1,57 @@
+﻿<Window x:Class="TimeRecorderStatistics.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TimeRecorder Statistics" Icon="TimeRecorder.ico" Height="350" Width="525" SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <Style x:Key="CheckableMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Header" Value="{Binding Header}"/>
+            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
+            <Setter Property="IsCheckable" Value="True"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Machines" ItemsSource="{Binding Machines}" ItemContainerStyle="{StaticResource CheckableMenuItemStyle}"/>
+            <MenuItem Header="Categories" ItemsSource="{Binding Categories}" ItemContainerStyle="{StaticResource CheckableMenuItemStyle}"/>
+            <MenuItem Header="Clear" Command="{Binding ClearCategoriesCommand}"/>
+            <MenuItem Header="Previous" Command="{Binding PreviousWeekCommand}"/>
+            <MenuItem Header="Next" Command="{Binding NextWeekCommand}"/>
+            <MenuItem Header="Report" Command="{Binding CreateReportCommand}"/>
+        </Menu>
+        <ScrollViewer  Margin="8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="1" Source="{Binding Header}" Stretch="None"/>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding Week}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Day}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Date}"/>
+                                    <TextBlock Text="{Binding TotalTime}"/>
+                                </StackPanel>
+                                <Image Grid.Column="1" Source="{Binding Image}" Stretch="None"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
