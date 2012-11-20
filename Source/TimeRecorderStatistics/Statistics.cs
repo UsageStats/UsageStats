@@ -22,14 +22,17 @@
             }
         }
     }
+
     public class Statistics : Observable
     {
-        public Statistics(DateTime date)
+        public Statistics(DateTime date, bool perMachine)
         {
             this.DateTime = date;
             this.TimeAndCategories = new Dictionary<int, string>();
+            this.perMachine = perMachine;
         }
 
+        private bool perMachine;
         public DateTime DateTime { get; set; }
 
         public string Date
@@ -74,8 +77,11 @@
 
         public Dictionary<int, string> TimeAndCategories { get; set; }
 
+        private List<string> machines = new List<string>();
+
         public void Add(string machine, IEnumerable<string> categories)
         {
+            machines.Add(machine);
             var folder = Path.Combine(TimeRecorder.TimeRecorder.RootFolder, machine);
             var path = Path.Combine(folder, TimeRecorder.TimeRecorder.FormatFileName(this.DateTime));
             if (File.Exists(path))
@@ -107,7 +113,13 @@
                     var hour = int.Parse(items[0].Substring(0, 2));
                     var min = int.Parse(items[0].Substring(3));
                     int x = hour * 60 + min;
-                    this.TimeAndCategories[x] = items[1];
+                    string current = string.Empty;
+                    if (this.TimeAndCategories.TryGetValue(x, out current))
+                    {
+                        current += " ";
+                    }
+
+                    this.TimeAndCategories[x] = current + machine + ":" + items[1];
                 }
             }
         }
@@ -120,9 +132,30 @@
             {
                 dc.DrawRectangle(Brushes.Black, null, r);
 
+                if (this.DateTime.DayOfWeek >= DayOfWeek.Monday && this.DateTime.DayOfWeek <= DayOfWeek.Friday)
+                {
+                    dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(40, 0, 20, 255)), null, new Rect(8 * 60, 0, 8 * 60, r.Height));
+                }
+
+                int n = machines.Count;
                 foreach (var kvp in this.TimeAndCategories)
                 {
-                    dc.DrawRectangle(Brushes.Green, null, new Rect(kvp.Key, 0, 1, r.Height));
+                    if (perMachine)
+                    {
+                        for (int i = 0; i < n; i++)
+                        {
+                            if (!kvp.Value.Contains(machines[i]))
+                            {
+                                continue;
+                            }
+
+                            dc.DrawRectangle(Brushes.Green, null, new Rect(kvp.Key, r.Height * i / n, 1, r.Height / n));
+                        }
+                    }
+                    else
+                    {
+                        dc.DrawRectangle(Brushes.Green, null, new Rect(kvp.Key, 0, 1, r.Height));
+                    }
                 }
 
                 var lineBrush = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255));

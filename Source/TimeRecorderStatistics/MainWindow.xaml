@@ -17,6 +17,9 @@
             <MenuItem Header="Previous" Command="{Binding PreviousWeekCommand}"/>
             <MenuItem Header="Next" Command="{Binding NextWeekCommand}"/>
             <MenuItem Header="Report" Command="{Binding CreateReportCommand}"/>
+            <MenuItem Header="View">
+                <MenuItem IsCheckable="True" IsChecked="{Binding PerMachine}" Header="Per machine"/>
+            </MenuItem>
         </Menu>
         <ScrollViewer  Margin="8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <StackPanel>
