@@ -22,6 +22,8 @@ namespace TimeRecorderStatistics
     {
         private DateTime firstDayOfWeek;
 
+        private bool perMachine;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -63,6 +65,19 @@ namespace TimeRecorderStatistics
         private void CreateReport()
         {
             throw new NotImplementedException();
+        }
+
+        public bool PerMachine
+        {
+            get
+            {
+                return this.perMachine;
+            }
+            set
+            {
+                this.perMachine = value;
+                this.Refresh();
+            }
         }
 
         public ObservableCollection<Statistics> Week { get; private set; }
@@ -116,7 +131,7 @@ namespace TimeRecorderStatistics
 
         private Statistics Load(DateTime date)
         {
-            var s = new Statistics(date);
+            var s = new Statistics(date, this.PerMachine);
             var categories = this.Categories.Where(c => c.IsChecked).Select(c => c.Header).ToList();
             foreach (var m in this.Machines.Where(m => m.IsChecked))
             {
