@@ -11,16 +11,28 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Machines" ItemsSource="{Binding Machines}" ItemContainerStyle="{StaticResource CheckableMenuItemStyle}"/>
-            <MenuItem Header="Categories" ItemsSource="{Binding Categories}" ItemContainerStyle="{StaticResource CheckableMenuItemStyle}"/>
-            <MenuItem Header="Clear" Command="{Binding ClearCategoriesCommand}"/>
+            <MenuItem Header="File">
+                <MenuItem Header="Report" Command="{Binding CreateReportCommand}"/>
+                <Separator/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
             <MenuItem Header="Previous" Command="{Binding PreviousWeekCommand}"/>
             <MenuItem Header="Next" Command="{Binding NextWeekCommand}"/>
-            <MenuItem Header="Report" Command="{Binding CreateReportCommand}"/>
             <MenuItem Header="View">
+                <MenuItem Header="Machines" ItemsSource="{Binding Machines}" ItemContainerStyle="{StaticResource CheckableMenuItemStyle}"/>
+                <MenuItem Header="Categories" ItemsSource="{Binding Categories}" ItemContainerStyle="{StaticResource CheckableMenuItemStyle}"/>
+                <MenuItem Header="Clear categories" Command="{Binding ClearCategoriesCommand}"/>
                 <MenuItem IsCheckable="True" IsChecked="{Binding PerMachine}" Header="Per machine"/>
+                <MenuItem IsCheckable="True" IsChecked="{Binding RenderSelectedOnly}" Header="Only selected categories"/>
             </MenuItem>
         </Menu>
+        <ListBox DockPanel.Dock="Right" Margin="8" BorderThickness="0" Width="160" ItemsSource="{Binding Categories}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Header}" IsChecked="{Binding IsChecked}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <ScrollViewer  Margin="8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Grid>
@@ -28,7 +40,7 @@
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Image Grid.Column="1" Source="{Binding Header}" Stretch="None"/>
@@ -41,13 +53,13 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="120"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Day}" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding Date}"/>
-                                    <TextBlock Text="{Binding TotalTime}"/>
+                                    <TextBlock Text="{Binding TimeInfo}"/>
                                 </StackPanel>
                                 <Image Grid.Column="1" Source="{Binding Image}" Stretch="None"/>
                             </Grid>

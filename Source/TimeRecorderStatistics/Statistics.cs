@@ -25,14 +25,18 @@
 
     public class Statistics : Observable
     {
-        public Statistics(DateTime date, bool perMachine)
+        public Statistics(DateTime date, List<string> categories)
         {
             this.DateTime = date;
             this.TimeAndCategories = new Dictionary<int, string>();
-            this.perMachine = perMachine;
+            this.categories = categories;
         }
 
-        private bool perMachine;
+        public bool RenderPerMachine { get; set; }
+        public bool RenderSelectedOnly { get; set; }
+
+        private readonly List<string> categories;
+
         public DateTime DateTime { get; set; }
 
         public string Date
@@ -55,16 +59,45 @@
         {
             get
             {
-                var minutes = this.TimeAndCategories.Count;
-                if (minutes == 0)
-                {
-                    return string.Empty;
-                }
-
-                var h = minutes / 60;
-                var m = minutes % 60;
-                return string.Format("{0}:{1:00}", h, m);
+                return ToTimeString(this.totalTime);
             }
+        }
+
+        public string SelectedTime
+        {
+            get
+            {
+                return ToTimeString(this.selectedTime);
+            }
+        }
+
+        public string SelectedPercentage
+        {
+            get
+            {
+                return string.Format("{0:0.0} %", 100.0 * this.selectedTime / this.totalTime);
+            }
+        }
+
+        public string TimeInfo
+        {
+            get
+            {
+                if (selectedTime == totalTime || selectedTime == 0) return ToTimeString(this.totalTime);
+                return string.Format("{0} / {1} ({2})", ToTimeString(this.selectedTime), ToTimeString(this.totalTime), this.SelectedPercentage);
+            }
+        }
+
+        private static string ToTimeString(int minutes)
+        {
+            if (minutes == 0)
+            {
+                return string.Empty;
+            }
+
+            var h = minutes / 60;
+            var m = minutes % 60;
+            return string.Format("{0}:{1:00}", h, m);
         }
 
         public ImageSource Image
@@ -79,49 +112,62 @@
 
         private List<string> machines = new List<string>();
 
-        public void Add(string machine, IEnumerable<string> categories)
+        private int totalTime;
+
+        private int selectedTime;
+
+        public void Add(string machine)
         {
-            machines.Add(machine);
+            this.machines.Add(machine);
             var folder = Path.Combine(TimeRecorder.TimeRecorder.RootFolder, machine);
             var path = Path.Combine(folder, TimeRecorder.TimeRecorder.FormatFileName(this.DateTime));
             if (File.Exists(path))
             {
                 var lines = File.ReadAllLines(path);
+                this.selectedTime = 0;
+                this.totalTime = 0;
                 foreach (var line in lines)
                 {
                     var items = line.Split(';');
-                    var c = items[1];
-                    bool ok = false;
-                    foreach (var cat in categories)
-                    {
-                        if (c.IndexOf(cat) >= 0)
-                        {
-                            ok = true;
-                        }
-
-                        if (string.IsNullOrWhiteSpace(c) && cat == "Unknown")
-                        {
-                            ok = true;
-                        }
-                    }
-
-                    if (!ok)
-                    {
-                        continue;
-                    }
-
+                    var category = items[1];
                     var hour = int.Parse(items[0].Substring(0, 2));
                     var min = int.Parse(items[0].Substring(3));
-                    int x = hour * 60 + min;
-                    string current = string.Empty;
+                    int x = (hour * 60) + min;
+
+                    if (string.IsNullOrWhiteSpace(category))
+                    {
+                        category = "Unknown";
+                    }
+
+                    string current;
                     if (this.TimeAndCategories.TryGetValue(x, out current))
                     {
                         current += " ";
                     }
 
-                    this.TimeAndCategories[x] = current + machine + ":" + items[1];
+                    this.TimeAndCategories[x] = current + machine + ":" + category;
+
+                    if (this.ValidCategory(category))
+                    {
+                        this.selectedTime++;
+                    }
+
+                    this.totalTime++;
                 }
             }
+        }
+
+        private bool ValidCategory(string c)
+        {
+            foreach (var cat in this.categories)
+            {
+                if (c.IndexOf(cat) >= 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public ImageSource Render()
@@ -137,24 +183,37 @@
                     dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(40, 0, 20, 255)), null, new Rect(8 * 60, 0, 8 * 60, r.Height));
                 }
 
-                int n = machines.Count;
+                int n = this.machines.Count;
                 foreach (var kvp in this.TimeAndCategories)
                 {
-                    if (perMachine)
+                    Brush brush = Brushes.Green;
+                    if (this.ValidCategory(kvp.Value))
+                    {
+                        brush = Brushes.DarkRed;
+                    }
+                    else
+                    {
+                        if (this.RenderSelectedOnly)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (this.RenderPerMachine)
                     {
                         for (int i = 0; i < n; i++)
                         {
-                            if (!kvp.Value.Contains(machines[i]))
+                            if (!kvp.Value.Contains(this.machines[i]))
                             {
                                 continue;
                             }
 
-                            dc.DrawRectangle(Brushes.Green, null, new Rect(kvp.Key, r.Height * i / n, 1, r.Height / n));
+                            dc.DrawRectangle(brush, null, new Rect(kvp.Key, r.Height * i / n, 1, r.Height / n));
                         }
                     }
                     else
                     {
-                        dc.DrawRectangle(Brushes.Green, null, new Rect(kvp.Key, 0, 1, r.Height));
+                        dc.DrawRectangle(brush, null, new Rect(kvp.Key, 0, 1, r.Height));
                     }
                 }
 
