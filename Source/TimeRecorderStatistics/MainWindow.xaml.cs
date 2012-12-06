@@ -20,19 +20,32 @@ namespace TimeRecorderStatistics
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            this.DataContext = new MainViewModel(this);
+        }
+    }
+
+    public class MainViewModel : Observable
+    {
+
         private DateTime firstDayOfWeek;
 
         private bool perMachine;
 
         private bool renderSelectedOnly;
 
-        public MainWindow()
+        private int totalTime;
+
+        private int selectedTime;
+
+        public MainViewModel(Window w)
         {
-            this.InitializeComponent();
             this.PreviousWeekCommand = new DelegateCommand(x => this.FirstDayOfWeek = this.FirstDayOfWeek.AddDays(-7));
             this.NextWeekCommand = new DelegateCommand(x => this.FirstDayOfWeek = this.FirstDayOfWeek.AddDays(7));
             this.CreateReportCommand = new DelegateCommand(x => CreateReport());
-            this.ExitCommand = new DelegateCommand(x => this.Close());
+            this.ExitCommand = new DelegateCommand(x => w.Close());
             this.ClearCategoriesCommand = new DelegateCommand(
                 x =>
                 {
@@ -61,11 +74,9 @@ namespace TimeRecorderStatistics
 
             var today = DateTime.Now.Date;
             this.FirstDayOfWeek = today.FirstDayOfWeek(CultureInfo.CurrentCulture);
-
-            this.DataContext = this;
         }
 
-        public DelegateCommand ExitCommand {get; set; }
+        public DelegateCommand ExitCommand { get; set; }
 
         private void CreateReport()
         {
@@ -128,11 +139,14 @@ namespace TimeRecorderStatistics
 
         private void Refresh()
         {
+            this.totalTime = 0;
+            this.selectedTime = 0;
             this.Week.Clear();
             for (int i = 0; i < 7; i++)
             {
                 this.Week.Add(this.Load(this.FirstDayOfWeek.AddDays(i)));
             }
+            this.RaisePropertyChanged("TimeInfo");
         }
 
         private void CategoryChanged(CheckableItem category)
@@ -154,8 +168,20 @@ namespace TimeRecorderStatistics
                 s.Add(m.Header);
             }
 
+            this.totalTime += s.TotalTime;
+            this.selectedTime += s.SelectedTime;
             return s;
         }
+
+        public string TimeInfo
+        {
+            get
+            {
+                if (this.selectedTime == this.totalTime || this.selectedTime == 0) return Statistics.ToTimeString(this.totalTime);
+                return string.Format("{0} / {1} ({2:0.0} %)", Statistics.ToTimeString(this.selectedTime), Statistics.ToTimeString(this.totalTime), 100.0 * this.selectedTime / this.totalTime);
+            }
+        }
+
     }
 
     public class MachineStatistics
