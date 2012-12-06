@@ -37,12 +37,15 @@
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding TimeInfo}"/>
+                    </StackPanel>
                     <Image Grid.Column="1" Source="{Binding Header}" Stretch="None"/>
                 </Grid>
                 <ItemsControl ItemsSource="{Binding Week}">

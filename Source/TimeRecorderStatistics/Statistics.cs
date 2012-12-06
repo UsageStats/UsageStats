@@ -55,19 +55,19 @@
             }
         }
 
-        public string TotalTime
+        public string TotalTimeString
         {
             get
             {
-                return ToTimeString(this.totalTime);
+                return ToTimeString(this.TotalTime);
             }
         }
 
-        public string SelectedTime
+        public string SelectedTimeString
         {
             get
             {
-                return ToTimeString(this.selectedTime);
+                return ToTimeString(this.SelectedTime);
             }
         }
 
@@ -75,7 +75,7 @@
         {
             get
             {
-                return string.Format("{0:0.0} %", 100.0 * this.selectedTime / this.totalTime);
+                return string.Format("{0:0.0} %", 100.0 * this.SelectedTime / this.TotalTime);
             }
         }
 
@@ -83,12 +83,12 @@
         {
             get
             {
-                if (selectedTime == totalTime || selectedTime == 0) return ToTimeString(this.totalTime);
-                return string.Format("{0} / {1} ({2})", ToTimeString(this.selectedTime), ToTimeString(this.totalTime), this.SelectedPercentage);
+                if (this.SelectedTime == this.TotalTime || this.SelectedTime == 0) return ToTimeString(this.TotalTime);
+                return string.Format("{0} / {1} ({2})", ToTimeString(this.SelectedTime), ToTimeString(this.TotalTime), this.SelectedPercentage);
             }
         }
 
-        private static string ToTimeString(int minutes)
+        public static string ToTimeString(int minutes)
         {
             if (minutes == 0)
             {
@@ -112,9 +112,9 @@
 
         private List<string> machines = new List<string>();
 
-        private int totalTime;
+        public int TotalTime { get; private set; }
 
-        private int selectedTime;
+        public int SelectedTime { get; private set; }
 
         public void Add(string machine)
         {
@@ -124,8 +124,6 @@
             if (File.Exists(path))
             {
                 var lines = File.ReadAllLines(path);
-                this.selectedTime = 0;
-                this.totalTime = 0;
                 foreach (var line in lines)
                 {
                     var items = line.Split(';');
@@ -149,10 +147,10 @@
 
                     if (this.ValidCategory(category))
                     {
-                        this.selectedTime++;
+                        this.SelectedTime++;
                     }
 
-                    this.totalTime++;
+                    this.TotalTime++;
                 }
             }
         }
