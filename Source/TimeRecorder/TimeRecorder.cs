@@ -39,6 +39,7 @@ namespace TimeRecorder
     using System.Threading;
     using System.Threading.Tasks;
 
+
     /// <summary>
     ///     Implements the time recording loop.
     /// </summary>
@@ -177,8 +178,8 @@ namespace TimeRecorder
                         var moduleName = p != null ? p.Modules[0].ModuleName : "n/a";
                         var title = GetForegroundWindowTitle();
                         var availableCategories = LoadCategories();
-                        var categories = GetCategories(title + " " + moduleName, availableCategories);
-                        var text = string.Format("{0:00}:{1:00};{2}", now.Hour, now.Minute, categories);
+                        var value = RecordWindowTitles ? title : GetCategories(title + " " + moduleName, availableCategories);
+                        var text = string.Format("{0:00}:{1:00};{2}", now.Hour, now.Minute, value);
                         var path = Path.Combine(Folder, FormatFileName(now));
                         using (var f = File.AppendText(path))
                         {
@@ -200,6 +201,8 @@ namespace TimeRecorder
 
             Log("Closed " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
+
+        public static bool RecordWindowTitles { get; set; }
 
         /// <summary>
         /// Writes the specified text to the log file.

@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.databaseRootFolder = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.databaseRootFolder = new System.Windows.Forms.TextBox();
+            this.recordWindowTitles = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,6 +42,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.recordWindowTitles);
             this.groupBox1.Controls.Add(this.databaseRootFolder);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
@@ -48,7 +50,24 @@
             this.groupBox1.Size = new System.Drawing.Size(431, 75);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Folder";
+            // 
+            // databaseRootFolder
+            // 
+            this.databaseRootFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.databaseRootFolder.Location = new System.Drawing.Point(129, 19);
+            this.databaseRootFolder.Name = "databaseRootFolder";
+            this.databaseRootFolder.Size = new System.Drawing.Size(296, 20);
+            this.databaseRootFolder.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Database root folder";
             // 
             // okButton
             // 
@@ -72,23 +91,15 @@
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // recordWindowTitles
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Database root folder";
-            // 
-            // databaseRootFolder
-            // 
-            this.databaseRootFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.databaseRootFolder.Location = new System.Drawing.Point(129, 19);
-            this.databaseRootFolder.Name = "databaseRootFolder";
-            this.databaseRootFolder.Size = new System.Drawing.Size(296, 20);
-            this.databaseRootFolder.TabIndex = 1;
+            this.recordWindowTitles.AutoSize = true;
+            this.recordWindowTitles.Location = new System.Drawing.Point(9, 52);
+            this.recordWindowTitles.Name = "recordWindowTitles";
+            this.recordWindowTitles.Size = new System.Drawing.Size(124, 17);
+            this.recordWindowTitles.TabIndex = 2;
+            this.recordWindowTitles.Text = "Record window titles";
+            this.recordWindowTitles.UseVisualStyleBackColor = true;
             // 
             // OptionsDialog
             // 
@@ -116,5 +127,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.CheckBox recordWindowTitles;
     }
 }

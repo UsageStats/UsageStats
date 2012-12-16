@@ -30,6 +30,8 @@
             this.DateTime = date;
             this.TimeAndCategories = new Dictionary<int, string>();
             this.categories = categories;
+            this.DayStartHour = 8.5;
+            this.DayEndHour = 16.5;
         }
 
         public bool RenderPerMachine { get; set; }
@@ -88,6 +90,20 @@
             }
         }
 
+        public string WorkHoursTimeInfo
+        {
+            get
+            {
+                if (this.SelectedWorkHoursTime == this.TotalTime || this.SelectedWorkHoursTime == 0)
+                {
+                    return string.Empty;
+                }
+
+                var percentage = 100.0 * this.SelectedWorkHoursTime / ((this.DayEndHour - this.DayStartHour) * 60);
+                return string.Format("{0} ({1:0.0} %)", ToTimeString(this.SelectedWorkHoursTime), percentage);
+            }
+        }
+
         public static string ToTimeString(int minutes)
         {
             if (minutes == 0)
@@ -115,6 +131,7 @@
         public int TotalTime { get; private set; }
 
         public int SelectedTime { get; private set; }
+        public int SelectedWorkHoursTime { get; private set; }
 
         public void Add(string machine)
         {
@@ -130,7 +147,8 @@
                     var category = items[1];
                     var hour = int.Parse(items[0].Substring(0, 2));
                     var min = int.Parse(items[0].Substring(3));
-                    int x = (hour * 60) + min;
+                    int minutes = (hour * 60) + min;
+                    double hours = hour + (min / 60.0);
 
                     if (string.IsNullOrWhiteSpace(category))
                     {
@@ -138,16 +156,20 @@
                     }
 
                     string current;
-                    if (this.TimeAndCategories.TryGetValue(x, out current))
+                    if (this.TimeAndCategories.TryGetValue(minutes, out current))
                     {
                         current += " ";
                     }
 
-                    this.TimeAndCategories[x] = current + machine + ":" + category;
+                    this.TimeAndCategories[minutes] = current + machine + ":" + category;
 
                     if (this.ValidCategory(category))
                     {
                         this.SelectedTime++;
+                        if (hours >= this.DayStartHour && hours <= this.DayEndHour && this.IsWeekDay())
+                        {
+                            this.SelectedWorkHoursTime++;
+                        }
                     }
 
                     this.TotalTime++;
@@ -176,9 +198,9 @@
             {
                 dc.DrawRectangle(Brushes.Black, null, r);
 
-                if (this.DateTime.DayOfWeek >= DayOfWeek.Monday && this.DateTime.DayOfWeek <= DayOfWeek.Friday)
+                if (this.IsWeekDay())
                 {
-                    dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(40, 0, 20, 255)), null, new Rect(8 * 60, 0, 8 * 60, r.Height));
+                    dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(60, 0, 20, 255)), null, new Rect(this.DayStartHour * 60, 0, (this.DayEndHour - this.DayStartHour) * 60, r.Height));
                 }
 
                 int n = this.machines.Count;
@@ -230,6 +252,15 @@
             return rtb;
         }
 
+        private bool IsWeekDay()
+        {
+            return this.DateTime.DayOfWeek >= DayOfWeek.Monday && this.DateTime.DayOfWeek <= DayOfWeek.Friday;
+        }
+
+        protected double DayStartHour { get; set; }
+
+        protected double DayEndHour { get; set; }
+
         public static ImageSource RenderHeader()
         {
             var r = new Rect(0, 0, 60 * 24, 40);
@@ -259,6 +290,17 @@
             var rtb = new RenderTargetBitmap((int)r.Width, (int)r.Height, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(drawingVisual);
             return rtb;
+        }
+
+        /// <summary>
+        /// Gets the tool tip for the specified time.
+        /// </summary>
+        /// <param name="minutes">The minutes of the day.</param>
+        /// <returns>The tooltip.</returns>
+        public string GetToolTip(int minutes)
+        {
+            string value;
+            return this.TimeAndCategories.TryGetValue(minutes, out value) ? value : null;
         }
     }
 }
