@@ -62,7 +62,7 @@ namespace TimeRecorder
         {
             this.trayIcon = new NotifyIcon
                                 {
-                                    Icon = GetIcon("TimeRecorder.TimeRecorder.ico"), 
+                                    Icon = GetIcon("TimeRecorder.TimeRecorder.ico"),
                                     ContextMenu =
                                         new ContextMenu(
                                         new[]
@@ -72,9 +72,11 @@ namespace TimeRecorder
                                                 new MenuItem("Statistics...", this.Statistics), 
                                                 new MenuItem("Explore...", this.Explore), new MenuItem("-"), 
                                                 new MenuItem("Exit", this.Exit)
-                                            }), 
+                                            }),
                                     Visible = true
                                 };
+
+            this.InitializeTimeRecorder();
 
             this.source = TimeRecorder.RunAsync();
         }
@@ -105,13 +107,25 @@ namespace TimeRecorder
         /// </param>
         private void Options(object sender, EventArgs e)
         {
-            var dialog = new OptionsDialog();
-            dialog.DatabaseRootFolder = Settings.Default.DatabaseRootFolder;
+            var dialog = new OptionsDialog
+                             {
+                                 DatabaseRootFolder = Settings.Default.DatabaseRootFolder,
+                                 RecordWindowTitles = Settings.Default.RecordWindowTitles
+                             };
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 Settings.Default.DatabaseRootFolder = dialog.DatabaseRootFolder;
+                Settings.Default.RecordWindowTitles = dialog.RecordWindowTitles;
                 Settings.Default.Save();
+
+                this.InitializeTimeRecorder();
             }
+        }
+
+        private void InitializeTimeRecorder()
+        {
+            TimeRecorder.RecordWindowTitles = Settings.Default.RecordWindowTitles;
         }
 
         /// <summary>
@@ -133,9 +147,9 @@ namespace TimeRecorder
             else
             {
                 MessageBox.Show(
-                    exe + " must be located in the same folder as TimeRecorder.exe", 
-                    "TimeRecorder", 
-                    MessageBoxButtons.OK, 
+                    exe + " must be located in the same folder as TimeRecorder.exe",
+                    "TimeRecorder",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }
         }

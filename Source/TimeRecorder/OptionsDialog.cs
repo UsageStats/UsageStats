@@ -63,5 +63,18 @@ namespace TimeRecorder
                 this.databaseRootFolder.Text = value;
             }
         }
+
+        public bool RecordWindowTitles
+        {
+            get
+            {
+                return this.recordWindowTitles.Checked;
+            }
+
+            set
+            {
+                this.recordWindowTitles.Checked = value;
+            }
+        }
     }
 }
