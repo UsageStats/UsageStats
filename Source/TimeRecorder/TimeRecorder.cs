@@ -179,6 +179,10 @@ namespace TimeRecorder
                         var title = GetForegroundWindowTitle();
                         var availableCategories = LoadCategories();
                         var value = RecordWindowTitles ? title : GetCategories(title + " " + moduleName, availableCategories);
+
+                        // Remove line breaks
+                        value = value.Replace("\r", string.Empty).Replace("\n", " ");
+                        
                         var text = string.Format("{0:00}:{1:00};{2}", now.Hour, now.Minute, value);
                         var path = Path.Combine(Folder, FormatFileName(now));
                         using (var f = File.AppendText(path))
@@ -193,7 +197,13 @@ namespace TimeRecorder
                 }
                 catch (Exception e)
                 {
-                    Log(e.Message);
+                    Log(string.Format("Exception {0}:", DateTime.Now));
+                    var ie = e;
+                    while (ie != null)
+                    {
+                        Log(ie.Message);
+                        ie = ie.InnerException;
+                    }
                 }
 
                 Thread.Sleep(2000);
