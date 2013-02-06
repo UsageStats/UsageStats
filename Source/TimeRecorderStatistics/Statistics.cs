@@ -144,6 +144,11 @@
                 foreach (var line in lines)
                 {
                     var items = line.Split(';');
+                    if (items.Length != 2)
+                    {
+                        continue;
+                    }
+
                     var category = items[1];
                     var hour = int.Parse(items[0].Substring(0, 2));
                     var min = int.Parse(items[0].Substring(3));
