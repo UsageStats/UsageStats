@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.recordWindowTitles = new System.Windows.Forms.CheckBox();
             this.databaseRootFolder = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.recordWindowTitles = new System.Windows.Forms.CheckBox();
+            this.runAtStartup = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,14 +43,25 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.runAtStartup);
             this.groupBox1.Controls.Add(this.recordWindowTitles);
             this.groupBox1.Controls.Add(this.databaseRootFolder);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(431, 75);
+            this.groupBox1.Size = new System.Drawing.Size(431, 146);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // recordWindowTitles
+            // 
+            this.recordWindowTitles.AutoSize = true;
+            this.recordWindowTitles.Location = new System.Drawing.Point(9, 52);
+            this.recordWindowTitles.Name = "recordWindowTitles";
+            this.recordWindowTitles.Size = new System.Drawing.Size(124, 17);
+            this.recordWindowTitles.TabIndex = 2;
+            this.recordWindowTitles.Text = "Record window titles";
+            this.recordWindowTitles.UseVisualStyleBackColor = true;
             // 
             // databaseRootFolder
             // 
@@ -73,7 +85,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(288, 94);
+            this.okButton.Location = new System.Drawing.Point(288, 165);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 1;
@@ -84,22 +96,22 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(369, 94);
+            this.cancelButton.Location = new System.Drawing.Point(369, 165);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
-            // recordWindowTitles
+            // runAtStartup
             // 
-            this.recordWindowTitles.AutoSize = true;
-            this.recordWindowTitles.Location = new System.Drawing.Point(9, 52);
-            this.recordWindowTitles.Name = "recordWindowTitles";
-            this.recordWindowTitles.Size = new System.Drawing.Size(124, 17);
-            this.recordWindowTitles.TabIndex = 2;
-            this.recordWindowTitles.Text = "Record window titles";
-            this.recordWindowTitles.UseVisualStyleBackColor = true;
+            this.runAtStartup.AutoSize = true;
+            this.runAtStartup.Location = new System.Drawing.Point(9, 73);
+            this.runAtStartup.Name = "runAtStartup";
+            this.runAtStartup.Size = new System.Drawing.Size(140, 17);
+            this.runAtStartup.TabIndex = 3;
+            this.runAtStartup.Text = "Run at Windows startup";
+            this.runAtStartup.UseVisualStyleBackColor = true;
             // 
             // OptionsDialog
             // 
@@ -107,7 +119,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(456, 129);
+            this.ClientSize = new System.Drawing.Size(456, 200);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.groupBox1);
@@ -128,5 +140,6 @@
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.CheckBox recordWindowTitles;
+        private System.Windows.Forms.CheckBox runAtStartup;
     }
 }
