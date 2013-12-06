@@ -40,6 +40,8 @@ namespace TimeRecorder
 
     using global::TimeRecorder.Properties;
 
+    using Microsoft.Win32;
+
     /// <summary>
     /// The time recorder application context.
     /// </summary>
@@ -110,16 +112,43 @@ namespace TimeRecorder
             var dialog = new OptionsDialog
                              {
                                  DatabaseRootFolder = Settings.Default.DatabaseRootFolder,
-                                 RecordWindowTitles = Settings.Default.RecordWindowTitles
+                                 RecordWindowTitles = Settings.Default.RecordWindowTitles,
+                                 RunAtStartup = Settings.Default.RunAtStartup
                              };
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 Settings.Default.DatabaseRootFolder = dialog.DatabaseRootFolder;
                 Settings.Default.RecordWindowTitles = dialog.RecordWindowTitles;
+                Settings.Default.RunAtStartup = dialog.RunAtStartup;
                 Settings.Default.Save();
 
+                this.UpdateRegistry();
                 this.InitializeTimeRecorder();
+            }
+        }
+
+        private void UpdateRegistry()
+        {
+            var name = "TimeRecorder";
+            using (var regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true))
+            {
+                if (regKey != null)
+                {
+                    if (Settings.Default.RunAtStartup)
+                    {
+                        var installPath = Assembly.GetEntryAssembly().Location;
+                        regKey.SetValue(name, installPath);
+                    }
+                    else
+                    {
+                        var value = regKey.GetValue(name);
+                        if (value != null)
+                        {
+                            regKey.DeleteValue(name);
+                        }
+                    }
+                }
             }
         }
 

@@ -76,5 +76,18 @@ namespace TimeRecorder
                 this.recordWindowTitles.Checked = value;
             }
         }
+
+        public bool RunAtStartup
+        {
+            get
+            {
+                return this.runAtStartup.Checked;
+            }
+
+            set
+            {
+                this.runAtStartup.Checked = value;
+            }
+        }
     }
 }
