@@ -143,7 +143,8 @@
                 var lines = File.ReadAllLines(path);
                 foreach (var line in lines)
                 {
-                    var items = line.Split(';');
+                    var trimmedLine = line.Trim().Trim('\0');
+                    var items = trimmedLine.Split(';');
                     if (items.Length != 2)
                     {
                         continue;
