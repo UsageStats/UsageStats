@@ -4,6 +4,8 @@ using UsageStats.Properties;
 
 namespace UsageStats
 {
+    using PropertyTools.DataAnnotations;
+
     public enum ReportInterval { Daily, Hourly }
 
     public class SettingsViewModel : Observable
