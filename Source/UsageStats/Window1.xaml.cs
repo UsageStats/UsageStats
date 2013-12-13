@@ -24,31 +24,31 @@ namespace UsageStats
 
         public Window1()
         {
-            InitializeComponent();
-            vm = new MainViewModel();
-            DataContext = vm;
+            this.InitializeComponent();
+            this.vm = new MainViewModel();
+            this.DataContext = vm;
 
-            Loaded += Window1_Loaded;
-            Closed += Window1_Closed;
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OpenCmdExecuted));
+            this.Loaded += this.Window1_Loaded;
+            this.Closed += this.Window1_Closed;
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, this.OpenCmdExecuted));
         }
 
         public bool CanClose { get; set; }
 
         private void Window1_Closed(object sender, EventArgs e)
         {
-            vm.OnClosed();
+            this.vm.OnClosed();
         }
 
         private void OpenCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ShowAndActivate();
+            this.ShowAndActivate();
         }
 
         private void Window1_Loaded(object sender, RoutedEventArgs e)
         {
             // this will remove the application from the task manager list (alt+tab list)
-            SetDesktopAsOwner();
+            this.SetDesktopAsOwner();
         }
 
         public void SetDesktopAsOwner()
@@ -61,8 +61,8 @@ namespace UsageStats
 
         protected override void OnClosed(EventArgs e)
         {
-            vm.SaveReports();
-            vm.Dispose();
+            this.vm.SaveReports();
+            this.vm.Dispose();
             base.OnClosed(e);
         }
 
@@ -80,16 +80,21 @@ namespace UsageStats
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            var d = new PropertyDialog { Icon = Icon, DataContext = vm.Settings, Title = "Application preferences" };
-            d.Topmost = this.Topmost;
+            var d = new PropertyDialog
+                        {
+                            Icon = Icon,
+                            DataContext = vm.Settings,
+                            Title = "Application preferences",
+                            Topmost = this.Topmost
+                        };
             d.ShowDialog();
-            vm.OnSettingsChanged();
+            this.vm.OnSettingsChanged();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            CanClose = true;
-            Close();
+            this.CanClose = true;
+            this.Close();
         }
 
         private void ProjectWebPage_Click(object sender, RoutedEventArgs e)
@@ -112,26 +117,22 @@ namespace UsageStats
 
         private void Show_Click(object sender, RoutedEventArgs e)
         {
-            ShowAndActivate();
+            this.ShowAndActivate();
         }
 
         private void ShowAndActivate()
         {
-            WindowState = WindowState.Normal;
-            Activate();
+            this.WindowState = WindowState.Normal;
+            this.Activate();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            e.Cancel = !CanClose;
+            e.Cancel = !this.CanClose;
             if (e.Cancel)
             {
-                WindowState = WindowState.Minimized;
-            }
-            else
-            {
-                NotifyIcon.Dispose();
+                this.WindowState = WindowState.Minimized;
             }
         }
     }
