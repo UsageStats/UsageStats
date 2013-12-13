@@ -62,8 +62,12 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\..\Components\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\packages\PropertyTools.Wpf.0.1\lib\PropertyTools.Wpf.dll</HintPath>
+    <Reference Include="PropertyTools">
+      <HintPath>..\packages\PropertyTools.Wpf.2013.1.21.1\lib\NET40\PropertyTools.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools.Wpf, Version=2013.1.1.1, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PropertyTools.Wpf.2013.1.21.1\lib\NET40\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
