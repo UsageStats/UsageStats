@@ -26,6 +26,9 @@
                 <MenuItem IsCheckable="True" IsChecked="{Binding PerMachine}" Header="Per machine"/>
                 <MenuItem IsCheckable="True" IsChecked="{Binding RenderSelectedOnly}" Header="Only selected categories"/>
             </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Data folders"><TextBox Text="{Binding RootFolders}" Width="200"/></MenuItem>
+            </MenuItem>
         </Menu>
         <ListBox DockPanel.Dock="Right" Margin="8" BorderThickness="0" Width="160" ItemsSource="{Binding Categories}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListBox.ItemTemplate>

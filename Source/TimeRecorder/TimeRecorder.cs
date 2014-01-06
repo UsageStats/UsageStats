@@ -39,7 +39,6 @@ namespace TimeRecorder
     using System.Threading;
     using System.Threading.Tasks;
 
-
     /// <summary>
     ///     Implements the time recording loop.
     /// </summary>
@@ -66,17 +65,6 @@ namespace TimeRecorder
         private const string CategoriesFile = "categories.txt";
 
         /// <summary>
-        ///     Initializes static members of the <see cref="TimeRecorder" /> class.
-        /// </summary>
-        static TimeRecorder()
-        {
-            RootFolder = GetRootFolder();
-            CreateDirectory(RootFolder);
-            CategoriesPath = Path.Combine(RootFolder, CategoriesFile);
-            Folder = Path.Combine(RootFolder, Environment.MachineName);
-        }
-
-        /// <summary>
         ///     Gets the root folder.
         /// </summary>
         public static string RootFolder { get; private set; }
@@ -90,6 +78,23 @@ namespace TimeRecorder
         ///     Gets the categories path.
         /// </summary>
         public static string CategoriesPath { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to record window titles.
+        /// </summary>
+        public static bool RecordWindowTitles { get; set; }
+
+        /// <summary>
+        /// Initializes the folders.
+        /// </summary>
+        /// <param name="rootFolder">The custom root folder.</param>
+        public static void InitializeFolders(string rootFolder)
+        {
+            RootFolder = string.IsNullOrEmpty(rootFolder) ? GetRootFolder() : rootFolder;
+            CreateDirectory(RootFolder);
+            CategoriesPath = Path.Combine(RootFolder, CategoriesFile);
+            Folder = Path.Combine(RootFolder, Environment.MachineName);
+        }
 
         /// <summary>
         ///     Runs the time recording asynchronously.
@@ -182,7 +187,7 @@ namespace TimeRecorder
 
                         // Remove line breaks
                         value = value.Replace("\r", string.Empty).Replace("\n", " ");
-                        
+
                         var text = string.Format("{0:00}:{1:00};{2}", now.Hour, now.Minute, value);
                         var path = Path.Combine(Folder, FormatFileName(now));
                         using (var f = File.AppendText(path))
@@ -211,8 +216,6 @@ namespace TimeRecorder
 
             Log("Closed " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
-
-        public static bool RecordWindowTitles { get; set; }
 
         /// <summary>
         /// Writes the specified text to the log file.
@@ -297,8 +300,14 @@ namespace TimeRecorder
         /// <returns>The root folder.</returns>
         private static string GetRootFolder()
         {
-            return Environment.GetEnvironmentVariable(PathEnvironmentVariable)
-                   ?? Path.Combine(GetDropboxFolder(), DefaultFolder);
+            var defaultFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), DefaultFolder);
+            var dropBoxFolder = GetDropboxFolder();
+            if (dropBoxFolder != null)
+            {
+                defaultFolder = Path.Combine(dropBoxFolder, DefaultFolder);
+            }
+
+            return Environment.GetEnvironmentVariable(PathEnvironmentVariable) ?? defaultFolder;
         }
 
         /// <summary>
@@ -307,11 +316,19 @@ namespace TimeRecorder
         /// <returns>The Dropbox folder.</returns>
         private static string GetDropboxFolder()
         {
-            var dropboxPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dropbox\\host.db");
-            var lines = File.ReadAllLines(dropboxPath);
-            var dropboxBase64Text = Convert.FromBase64String(lines[1]);
-            return Encoding.UTF8.GetString(dropboxBase64Text);
+            try
+            {
+                var dropboxPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Dropbox\\host.db");
+                var lines = File.ReadAllLines(dropboxPath);
+                var dropboxBase64Text = Convert.FromBase64String(lines[1]);
+                return Encoding.UTF8.GetString(dropboxBase64Text);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
