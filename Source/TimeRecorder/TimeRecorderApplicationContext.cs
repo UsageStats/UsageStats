@@ -111,7 +111,7 @@ namespace TimeRecorder
         {
             var dialog = new OptionsDialog
                              {
-                                 DatabaseRootFolder = Settings.Default.DatabaseRootFolder,
+                                 DatabaseRootFolder = TimeRecorder.RootFolder,
                                  RecordWindowTitles = Settings.Default.RecordWindowTitles,
                                  RunAtStartup = Settings.Default.RunAtStartup
                              };
@@ -152,9 +152,19 @@ namespace TimeRecorder
             }
         }
 
+        /// <summary>
+        /// Initializes the time recorder.
+        /// </summary>
         private void InitializeTimeRecorder()
         {
             TimeRecorder.RecordWindowTitles = Settings.Default.RecordWindowTitles;
+            var rootFolder = Settings.Default.DatabaseRootFolder;
+            if (string.IsNullOrEmpty(rootFolder))
+            {
+                rootFolder = null;
+            }
+
+            TimeRecorder.InitializeFolders(rootFolder);
         }
 
         /// <summary>
