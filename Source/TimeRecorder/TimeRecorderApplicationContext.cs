@@ -179,14 +179,15 @@ namespace TimeRecorder
         private void Statistics(object sender, EventArgs e)
         {
             var exe = "TimeRecorderStatistics.exe";
-            if (File.Exists(exe))
+            var fullPath = Path.GetFullPath(exe);
+            if (File.Exists(fullPath))
             {
-                Process.Start(exe);
+                Process.Start(fullPath);
             }
             else
             {
                 MessageBox.Show(
-                    exe + " must be located in the same folder as TimeRecorder.exe",
+                    exe + " must be located in the same folder as TimeRecorder.exe.\nCould not find " + fullPath,
                     "TimeRecorder",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
