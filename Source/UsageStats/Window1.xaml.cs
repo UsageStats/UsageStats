@@ -99,7 +99,7 @@ namespace UsageStats
 
         private void ProjectWebPage_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://usagestats.codeplex.com");
+            Process.Start("https://github.com/objorke/UsageStats");
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
