@@ -219,7 +219,7 @@ namespace TimeRecorder
         /// </param>
         private void About(object sender, EventArgs e)
         {
-            Process.Start("http://usagestats.codeplex.com/");
+            Process.Start("https://github.com/objorke/UsageStats");
         }
 
         /// <summary>
