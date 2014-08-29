@@ -23,8 +23,6 @@ namespace TimeRecorderStatistics
 
         private int selectedTime;
 
-        private string rootFolders;
-
         public MainViewModel(Window w)
         {
             this.PreviousWeekCommand = new DelegateCommand(x => this.FirstDayOfWeek = this.FirstDayOfWeek.AddDays(-7));
@@ -143,7 +141,11 @@ namespace TimeRecorderStatistics
         {
             get
             {
-                if (this.selectedTime == this.totalTime || this.selectedTime == 0) return Statistics.ToTimeString(this.totalTime);
+                if (this.selectedTime == this.totalTime || this.selectedTime == 0)
+                {
+                    return Statistics.ToTimeString(this.totalTime);
+                }
+
                 return string.Format("{0} / {1} ({2:0.0} %)", Statistics.ToTimeString(this.selectedTime), Statistics.ToTimeString(this.totalTime), 100.0 * this.selectedTime / this.totalTime);
             }
         }
@@ -157,6 +159,7 @@ namespace TimeRecorderStatistics
             {
                 this.Week.Add(this.Load(this.FirstDayOfWeek.AddDays(i)));
             }
+
             this.RaisePropertyChanged("TimeInfo");
         }
 
