@@ -1,0 +1,17 @@
+version: 2014.1.{build}
+
+install:
+  - cinst stylecop
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  project: Source/UsageStats.sln
+  verbosity: normal
+
+artifacts:
+  - path: Output
+    name: 'UsageStats'
+    type: zip
