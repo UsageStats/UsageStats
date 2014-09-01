@@ -9,9 +9,9 @@ configuration: Release
 
 build:
   project: Source/UsageStats.sln
-  verbosity: normal
+  verbosity: minimal
 
 artifacts:
   - path: Output
-    name: 'UsageStats'
+    name: UsageStats-$(APPVEYOR_BUILD_VERSION)
     type: zip
