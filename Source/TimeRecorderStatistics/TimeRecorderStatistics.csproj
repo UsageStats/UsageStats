@@ -55,7 +55,10 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Report.cs" />
+    <Compile Include="ReportPeriodStatistics.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="ToolTipBehavior.cs" />
     <Page Include="MainWindow.xaml">

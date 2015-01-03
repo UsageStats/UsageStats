@@ -126,7 +126,7 @@
 
         public Dictionary<int, string> TimeAndCategories { get; set; }
 
-        private List<string> machines = new List<string>();
+        private readonly List<string> machines = new List<string>();
 
         public int TotalTime { get; private set; }
 

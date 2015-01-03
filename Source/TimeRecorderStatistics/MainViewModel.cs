@@ -2,12 +2,15 @@ namespace TimeRecorderStatistics
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
+
+    using Microsoft.Win32;
 
     using TimeRecorderStatistics.Properties;
 
@@ -146,7 +149,11 @@ namespace TimeRecorderStatistics
                     return Statistics.ToTimeString(this.totalTime);
                 }
 
-                return string.Format("{0} / {1} ({2:0.0} %)", Statistics.ToTimeString(this.selectedTime), Statistics.ToTimeString(this.totalTime), 100.0 * this.selectedTime / this.totalTime);
+                return string.Format(
+                    "{0} / {1} ({2:0.0} %)",
+                    Statistics.ToTimeString(this.selectedTime),
+                    Statistics.ToTimeString(this.totalTime),
+                    100.0 * this.selectedTime / this.totalTime);
             }
         }
 
@@ -176,7 +183,11 @@ namespace TimeRecorderStatistics
         private Statistics Load(DateTime date)
         {
             var categories = this.Categories.Where(c => c.IsChecked).Select(c => c.Header).ToList();
-            var s = new Statistics(date, categories) { RenderPerMachine = this.PerMachine, RenderSelectedOnly = this.RenderSelectedOnly };
+            var s = new Statistics(date, categories)
+                        {
+                            RenderPerMachine = this.PerMachine,
+                            RenderSelectedOnly = this.RenderSelectedOnly
+                        };
             foreach (var m in this.Machines.Where(m => m.IsChecked))
             {
                 s.Add(m.Header);
@@ -189,6 +200,31 @@ namespace TimeRecorderStatistics
 
         private void CreateReport()
         {
+            var dialog = new SaveFileDialog
+                             {
+                                 Filter = "Report files (*.txt)|*.txt",
+                                 FileName = "Report.txt",
+                                 DefaultExt = ".txt"
+                             };
+
+            if (!dialog.ShowDialog().Value)
+            {
+                return;
+            }
+
+            var rootFolder = TimeRecorder.TimeRecorder.RootFolder;
+            var categories = this.Categories.Where(c => c.IsChecked).Select(c => c.Header).ToList();
+
+            var report = new Report(categories, 8.5, 16.5);
+            
+            // add logs for all machines
+            report.AddAll(rootFolder);
+
+            // export
+            report.Export(dialog.FileName);
+            
+            // open the folder
+            Process.Start("Explorer.exe", Path.GetDirectoryName(dialog.FileName));
         }
     }
 }
