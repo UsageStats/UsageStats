@@ -179,7 +179,9 @@ namespace TimeRecorder
         private void Statistics(object sender, EventArgs e)
         {
             var exe = "TimeRecorderStatistics.exe";
-            var fullPath = Path.GetFullPath(exe);
+            var location = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+            var fullPath = Path.Combine(directory, exe);
             if (File.Exists(fullPath))
             {
                 Process.Start(fullPath);
