@@ -1,10 +1,11 @@
-Application Usage Statistics for WPF
+Application Usage Statistics
 ========================================================================
-This application generates statistics on the usage of keyboard and mouse.
-
-License:       The MIT License (MIT)
-Project page:  https://github.com/objorke/UsageStats
+This project contains two applications:
+- UsageStats: generates detailed statistics on the usage of keyboard and mouse.
+- TimeRecorder: records the title of the active window every minute when the computer is in active use
 
 Build requirements
-- Microsoft .NET 4.0 Client Profile
-- Visual Studio 2010
+- Microsoft .NET 4.0
+- Visual Studio 2010 or later
+
+[![Build status](https://ci.appveyor.com/api/projects/status/78l59q8r5h1a6e21?svg=true)](https://ci.appveyor.com/project/objorke/usagestats)
