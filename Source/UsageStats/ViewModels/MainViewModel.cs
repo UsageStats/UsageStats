@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -58,7 +61,7 @@ Windows Explorer";
             }
             catch (Exception)
             {
-                
+
             }
 
             Settings = new SettingsViewModel();
@@ -129,7 +132,7 @@ Windows Explorer";
         {
             get { return CreateApplicationReport(); }
         }
-      
+
         public string Report
         {
             get
@@ -151,7 +154,7 @@ Windows Explorer";
         public void UpdateMemoryCounter()
         {
             long totalMemory = GC.GetTotalMemory(false);
-            if (bytesInAllHeapsPerformanceCounter!=null)
+            if (bytesInAllHeapsPerformanceCounter != null)
             {
                 var bytesInAllHeaps = bytesInAllHeapsPerformanceCounter.RawValue;
             }
@@ -191,6 +194,60 @@ Windows Explorer";
             return sb.ToString();
         }
 
+        [DataContract]
+        class Stats
+        {
+            [DataMember]
+            public KeyboardStatistics.KeyboardStats Keyboard;
+            [DataMember]
+            public MouseStatistics.MouseStats Mouse;
+        }
+
+        private void PostReports()
+        {
+            if (Settings.PushUrl == string.Empty)
+                return;
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Settings.PushUrl);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = "{\"user\":\"test\"," +
+                              "\"password\":\"bla\"}";
+                MemoryStream stream1 = new MemoryStream();
+
+                Stats stats = new Stats();
+                stats.Mouse = MouseStatistics.Stats;
+                stats.Keyboard = KeyboardStatistics.Stats;            
+
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Stats));
+                ser.WriteObject(stream1, stats);
+                
+                stream1.Position = 0;
+                StreamReader sr = new StreamReader(stream1);
+
+                string s = sr.ReadToEnd();
+                Console.WriteLine(s);
+
+
+                streamWriter.Write(s);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+            }
+
+
+
+
+
+        }
         public void SaveReports()
         {
             string path = Settings.ReportPath;
@@ -200,6 +257,8 @@ Windows Explorer";
                 Statistics s = kvp.Value;
                 SaveReport(s, Path.Combine(path, kvp.Key));
             }
+
+            PostReports();
         }
 
         public void SaveReport(Statistics s, string prefix)
@@ -271,14 +330,14 @@ Windows Explorer";
             w.Write("{0:HH:mm:ss};", LastActivity);
             w.Write("{0};", s.Activity.TimeActive.ToShortString());
             w.Write("{0:0.0};", s.MouseKeyboardRatio);
-            w.Write("{0};", s.KeyboardStatistics.KeyStrokes);
+            w.Write("{0};", s.KeyboardStatistics.Stats.KeyStrokes);
             w.Write("{0:0};", s.KeyboardStatistics.KeyStrokesPerMinute);
-            w.Write("{0:0};", s.MouseStatistics.LeftMouseClicks);
-            w.Write("{0:0};", s.MouseStatistics.MiddleMouseClicks);
-            w.Write("{0:0};", s.MouseStatistics.RightMouseClicks);
-            w.Write("{0:0};", s.MouseStatistics.MouseDoubleClicks);
+            w.Write("{0:0};", s.MouseStatistics.Stats.LeftMouseClicks);
+            w.Write("{0:0};", s.MouseStatistics.Stats.MiddleMouseClicks);
+            w.Write("{0:0};", s.MouseStatistics.Stats.RightMouseClicks);
+            w.Write("{0:0};", s.MouseStatistics.Stats.MouseDoubleClicks);
             w.Write("{0:0.0};", s.MouseStatistics.MouseDistance);
-            w.Write("{0:0};", s.MouseStatistics.MouseWheelDistance);
+            w.Write("{0:0};", s.MouseStatistics.Stats.MouseWheelDistance);
             w.Write("{0:0};", s.MouseStatistics.MouseClicksPerMinute);
             w.WriteLine();
 

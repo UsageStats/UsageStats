@@ -42,8 +42,8 @@ namespace UsageStats
         {
             get
             {
-                double m = MouseStatistics.MouseActivity.TimeActive.TotalSeconds;
-                double k = KeyboardStatistics.KeyboardActivity.TimeActive.TotalSeconds;
+                double m = MouseStatistics.Stats.MouseActivity.TimeActive.TotalSeconds;
+                double k = KeyboardStatistics.Stats.KeyboardActivity.TimeActive.TotalSeconds;
                 return k == 0 ? 0 : m/k;
             }
         }

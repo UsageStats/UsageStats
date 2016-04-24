@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Runtime.Serialization;
 namespace UsageStats
 {
     /// <summary>
     /// Count occurences and report per hour of day.
     /// </summary>
+   [DataContract]
     public class CountPerHour : IEnumerable<KeyValuePair<int,int>>
     {
         public CountPerHour(TimePerHour reference = null)
@@ -16,8 +17,10 @@ namespace UsageStats
             Reference = reference;
         }
 
+        [DataMember]
         public int[] Count { get; private set; }
 
+        [DataMember]
         public TimePerHour Reference { get; private set; }
 
         public void Increase()

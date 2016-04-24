@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using PropertyTools.Wpf;
+using System.IO;
+using System.Runtime.Serialization.Json;
 
 namespace UsageStats
 {
@@ -71,6 +73,18 @@ namespace UsageStats
             try
             {
                 Process.Start(vm.Settings.ReportPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void SaveReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                vm.SaveReports();                
             }
             catch (Exception ex)
             {

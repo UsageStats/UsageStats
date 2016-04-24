@@ -39,6 +39,17 @@ namespace UsageStats
             }
         }
 
+        [Category("Reports|Output")]
+        [DisplayName("PUSH URL")]
+        public string PushUrl
+        {
+            get { return settings.PushUrl; }
+            set
+            {
+                settings.PushUrl = value;
+                RaisePropertyChanged("ReportInterval");
+            }
+        }
         [Category("Statistics|Limits")]
         [DisplayName("Inactivity threshold (sec)")]
         public double InactivityThreshold
