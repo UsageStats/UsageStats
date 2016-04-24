@@ -185,11 +185,11 @@ Windows Explorer";
             foreach (var kvp in ApplicationUsage)
             {
                 Statistics s = kvp.Value;
-                if (s.Activity.TimeActive.TotalSeconds == 0)
+                if (s.Stats.Activity.TimeActive.TotalSeconds == 0)
                 {
                     continue;
                 }
-                sb.AppendLine(String.Format("{0} {1}", kvp.Key.PadRight(longest + 2), s.Activity));
+                sb.AppendLine(String.Format("{0} {1}", kvp.Key.PadRight(longest + 2), s.Stats.Activity));
             }
             return sb.ToString();
         }
@@ -201,6 +201,8 @@ Windows Explorer";
             public KeyboardStatistics.KeyboardStats Keyboard;
             [DataMember]
             public MouseStatistics.MouseStats Mouse;
+            [DataMember]
+            public Statistics.GenericStats Global;
         }
 
         private void PostReports()
@@ -220,7 +222,8 @@ Windows Explorer";
 
                 Stats stats = new Stats();
                 stats.Mouse = MouseStatistics.Stats;
-                stats.Keyboard = KeyboardStatistics.Stats;            
+                stats.Keyboard = KeyboardStatistics.Stats;
+                stats.Global = Statistics.Stats;
 
                 DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Stats));
                 ser.WriteObject(stream1, stats);
@@ -328,7 +331,7 @@ Windows Explorer";
             w.Write("{0:yyyy-MM-dd};", RecordingStarted);
             w.Write("{0:HH:mm:ss};", FirstActivity);
             w.Write("{0:HH:mm:ss};", LastActivity);
-            w.Write("{0};", s.Activity.TimeActive.ToShortString());
+            w.Write("{0};", s.Stats.Activity.TimeActive.ToShortString());
             w.Write("{0:0.0};", s.MouseKeyboardRatio);
             w.Write("{0};", s.KeyboardStatistics.Stats.KeyStrokes);
             w.Write("{0:0};", s.KeyboardStatistics.KeyStrokesPerMinute);
@@ -426,7 +429,7 @@ Windows Explorer";
         private void AddApplication(string appName)
         {
             if (!ApplicationUsage.ContainsKey(appName))
-                ApplicationUsage.Add(appName, new Statistics(Statistics.Activity));
+                ApplicationUsage.Add(appName, new Statistics(Statistics.Stats.Activity));
         }
 
         public IEnumerable<Statistics> GetCurrentStatistics()

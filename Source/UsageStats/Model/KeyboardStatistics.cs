@@ -16,8 +16,6 @@ namespace UsageStats
             Stats.KeyboardActivity = new ActiveTime(total);
             Stats.KeyCountPerHour = new CountPerHour(activityPerHour);
             TypingSpeed = new Histogram(25);
-            
-
         }
 
         [DataContract]

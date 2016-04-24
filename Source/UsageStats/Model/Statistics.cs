@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -8,14 +9,32 @@ namespace UsageStats
 {
     public class Statistics : Observable
     {
+        [DataContract]
+        public class GenericStats
+        {
+            [DataMember]
+            public ActiveTime Activity { get; set; }
+            [DataMember]
+            public CountPerHour WindowSwitchesPerHour { get; set; }
+            [DataMember]
+            public CountPerHour InterruptionsPerHour { get; set; }
+            [DataMember]
+            public TimePerHour ActivityPerHour { get; set; }
+        }
+
+        public KeyboardStatistics KeyboardStatistics { get; set; }
+        public MouseStatistics MouseStatistics { get; set; }
+        public GenericStats Stats { get; set; }
+
         public Statistics(ActiveTime reference)
         {
-            Activity = new ActiveTime(reference);
-            ActivityPerHour = new TimePerHour();
-            KeyboardStatistics = new KeyboardStatistics(Activity, ActivityPerHour);
-            MouseStatistics = new MouseStatistics(Activity, ActivityPerHour, SystemParameters.VirtualScreenWidth / SystemParameters.VirtualScreenHeight);
-            InterruptionsPerHour = new CountPerHour();
-            WindowSwitchesPerHour = new CountPerHour();
+            Stats = new GenericStats();
+            Stats.Activity = new ActiveTime(reference);
+            Stats.ActivityPerHour = new TimePerHour();
+            KeyboardStatistics = new KeyboardStatistics(Stats.Activity, Stats.ActivityPerHour);
+            MouseStatistics = new MouseStatistics(Stats.Activity, Stats.ActivityPerHour, SystemParameters.VirtualScreenWidth / SystemParameters.VirtualScreenHeight);
+            Stats.InterruptionsPerHour = new CountPerHour();
+            Stats.WindowSwitchesPerHour = new CountPerHour();
         }
         public int WindowSwitches { get; set; }
 
@@ -29,15 +48,7 @@ namespace UsageStats
             get { return Settings.Default.InterruptionThreshold; }
         }
 
-        public ActiveTime Activity { get; set; }
-
-        public KeyboardStatistics KeyboardStatistics { get; set; }
-        public MouseStatistics MouseStatistics { get; set; }
-
-        public CountPerHour WindowSwitchesPerHour { get; set; }
-        public CountPerHour InterruptionsPerHour { get; set; }
-        public TimePerHour ActivityPerHour { get; set; }
-
+      
         public double MouseKeyboardRatio
         {
             get
@@ -51,21 +62,21 @@ namespace UsageStats
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine(String.Format("Active time:                  {0}", Activity.TimeActive.ToShortString()));
+            sb.AppendLine(String.Format("Active time:                  {0}", Stats.Activity.TimeActive.ToShortString()));
             if (MouseKeyboardRatio > 0)
                 sb.AppendLine(String.Format("Mouse/Keyboard ratio: {0:0.0}", MouseKeyboardRatio));
             sb.AppendLine();
 
             sb.AppendLine("ACTIVITY PER HOUR");
-            sb.AppendLine(ActivityPerHour.Report(false));
+            sb.AppendLine(Stats.ActivityPerHour.Report(false));
             sb.AppendLine();
 
             sb.AppendLine("INTERRUPTIONS PER HOUR");
-            sb.Append(InterruptionsPerHour.Report(false));
+            sb.Append(Stats.InterruptionsPerHour.Report(false));
             sb.AppendLine();
 
             sb.AppendLine("WINDOW SWITCHES PER HOUR");
-            sb.Append(WindowSwitchesPerHour.Report(false));
+            sb.Append(Stats.WindowSwitchesPerHour.Report(false));
             sb.AppendLine(String.Format("  Total: {0}", WindowSwitches));
             sb.AppendLine();
 
@@ -91,13 +102,13 @@ namespace UsageStats
 
         private void RegisterActivity()
         {
-            bool isNewDay = Activity.IsNewDay();
-            double secondsSinceLastCheck = Activity.Update(InactivityThreshold);
+            bool isNewDay = Stats.Activity.IsNewDay();
+            double secondsSinceLastCheck = Stats.Activity.Update(InactivityThreshold);
             if (secondsSinceLastCheck > InterruptionThreshold && !isNewDay)
-                InterruptionsPerHour.Add(1);
+                Stats.InterruptionsPerHour.Add(1);
             if (secondsSinceLastCheck < InactivityThreshold)
             {
-                ActivityPerHour.Add(TimeSpan.FromSeconds(secondsSinceLastCheck));
+                Stats.ActivityPerHour.Add(TimeSpan.FromSeconds(secondsSinceLastCheck));
             }
             RaisePropertyChanged("Activity");
         }
@@ -106,7 +117,7 @@ namespace UsageStats
         {
             WindowSwitches++;
             RaisePropertyChanged("WindowSwitches");
-            WindowSwitchesPerHour.Add(1);
+            Stats.WindowSwitchesPerHour.Add(1);
         }
 
         public void KeyDown(string key)
