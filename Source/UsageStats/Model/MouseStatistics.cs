@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using System.Windows.Forms;
 namespace UsageStats
 {
     public class MouseStatistics : Observable
@@ -31,13 +31,24 @@ namespace UsageStats
             MovementSpeed = new Histogram(50);
             MovementDirection = new Histogram(45);
 
-            var w = (int)(SystemParameters.PrimaryScreenWidth / screenMapScale);
+            var w = (int)(SystemParameters.VirtualScreenWidth / screenMapScale);
             ClickMap = new ScreenBitmap(w);
             DoubleClickMap = new ScreenBitmap(w);
             TraceMap = new ScreenBitmap(w);
             DragTraceMap = new ScreenBitmap(w);
+
+            // Get the top left corner of the screen
+            Point origin = new Point();
+            foreach( System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens)
+            {
+                origin.X = Math.Min(origin.X, s.Bounds.X);
+                origin.Y = Math.Min(origin.Y, s.Bounds.Y);
+            }
+
+            Origin = origin;
         }
 
+        public Point Origin { get; set; }
         public int LeftMouseClicks { get; set; }
         public int RightMouseClicks { get; set; }
         public int MiddleMouseClicks { get; set; }
@@ -195,6 +206,10 @@ namespace UsageStats
 
         public void MouseMove(Point pt)
         {
+           // pt might be negative when there is multiple desktops, and the primary screen is not the left-most one
+            pt.X -= Origin.X;
+            pt.Y -= Origin.Y;
+
             double dx = pt.X - lastPoint.X;
             double dy = pt.Y - lastPoint.Y;
             double dl = Math.Sqrt(dx * dx + dy * dy);

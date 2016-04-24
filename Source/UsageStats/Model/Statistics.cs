@@ -13,7 +13,7 @@ namespace UsageStats
             Activity = new ActiveTime(reference);
             ActivityPerHour = new TimePerHour();
             KeyboardStatistics = new KeyboardStatistics(Activity, ActivityPerHour);
-            MouseStatistics = new MouseStatistics(Activity, ActivityPerHour, 1);
+            MouseStatistics = new MouseStatistics(Activity, ActivityPerHour, SystemParameters.VirtualScreenWidth / SystemParameters.VirtualScreenHeight);
             InterruptionsPerHour = new CountPerHour();
             WindowSwitchesPerHour = new CountPerHour();
         }
