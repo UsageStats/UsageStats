@@ -31,11 +31,12 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="Open report folder" ToolTip="{Binding Settings.ReportPath}" Click="ReportFolder_Click"/>
+                <MenuItem Header="Save report" ToolTip="{Binding Settings.ReportPath}" Click="SaveReport_Click"/>
                 <MenuItem Header="_Preferences..." Click="Settings_Click"/>
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Help">
+             <MenuItem Header="_Help">
                 <MenuItem Header="Project web page" Click="ProjectWebPage_Click"/>
                 <MenuItem Header="Chec_k for Updates" IsEnabled="False" IsCheckable="True" IsChecked="{Binding Settings.CheckForUpdates}"/>
                 <Separator/>

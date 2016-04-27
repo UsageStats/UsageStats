@@ -2,32 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace UsageStats
 {
+    
     public class KeyboardStatistics : Observable
     {
         public KeyboardStatistics(ActiveTime total, TimePerHour activityPerHour)
         {
-            KeyUsage = new Dictionary<string, int>();
-            KeyboardActivity = new ActiveTime(total);
-            KeyCountPerHour = new CountPerHour(activityPerHour);
+            Stats = new KeyboardStats();
+            Stats.KeyUsage = new Dictionary<string, int>();
+            Stats.KeyboardActivity = new ActiveTime(total);
+            Stats.KeyCountPerHour = new CountPerHour(activityPerHour);
             TypingSpeed = new Histogram(25);
         }
 
-        public int KeyStrokes { get; set; }
-        public Dictionary<string, int> KeyUsage { get; set; }
+        [DataContract]
+        public class KeyboardStats
+        {
+            [DataMember]
+            public int KeyStrokes { get; set; }
+            [DataMember]
+            public Dictionary<string, int> KeyUsage { get; set; }
 
+            [DataMember]
+            public ActiveTime KeyboardActivity { get; set; }
+            [DataMember]
+            public CountPerHour KeyCountPerHour { get; set; }
+        }
 
-        public ActiveTime KeyboardActivity { get; set; }
-        public CountPerHour KeyCountPerHour { get; set; }
+        public KeyboardStats Stats { get; set; }
 
         // todo: should not be neccessary to duplicate these dictionaries in order to get the BarChart ItemsControl to work?
         public Dictionary<string, int> KeyUsageList
         {
             get
             {
-                return KeyUsage.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                return Stats.KeyUsage.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
         }
 
@@ -35,7 +47,7 @@ namespace UsageStats
         {
             get
             {
-                return KeyCountPerHour.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
+                return Stats.KeyCountPerHour.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
             }
         }
 
@@ -50,8 +62,8 @@ namespace UsageStats
         {
             get
             {
-                double min = KeyboardActivity.TotalSeconds / 60;
-                return min > 0 ? KeyStrokes / min : 0;
+                double min = Stats.KeyboardActivity.TotalSeconds / 60;
+                return min > 0 ? Stats.KeyStrokes / min : 0;
             }
         }
 
@@ -63,8 +75,8 @@ namespace UsageStats
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine(String.Format(" Keystrokes:    {0}", KeyStrokes));
-            sb.AppendLine(String.Format(" Activity:      {0}", KeyboardActivity));
+            sb.AppendLine(String.Format(" Keystrokes:    {0}", Stats.KeyStrokes));
+            sb.AppendLine(String.Format(" Activity:      {0}", Stats.KeyboardActivity));
             sb.AppendLine();
             sb.AppendLine(String.Format(" Average speed: {0:0} keystrokes/min", TypingSpeed.Average));
             sb.AppendLine();
@@ -72,15 +84,15 @@ namespace UsageStats
             //sb.AppendLine(TypingSpeed.Report());
             //sb.AppendLine();
             sb.AppendLine(" Keystrokes per hour:");
-            sb.AppendLine(KeyCountPerHour.Report(false));
+            sb.AppendLine(Stats.KeyCountPerHour.Report(false));
             sb.AppendLine();
-            var list = KeyUsage.ToList().OrderByDescending(kvp => kvp.Value);
+            var list = Stats.KeyUsage.ToList().OrderByDescending(kvp => kvp.Value);
             if (list.Count() > 0)
             {
                 int longest = list.Max(kvp => kvp.Key.ToString().Length);
                 foreach (var kvp in list)
                 {
-                    double p = KeyStrokes > 0 ? 1.0 * kvp.Value / KeyStrokes : 0;
+                    double p = Stats.KeyStrokes > 0 ? 1.0 * kvp.Value / Stats.KeyStrokes : 0;
                     sb.AppendLine(String.Format(" {0} {1:####} {2:0.0%}", kvp.Key.PadRight(longest), kvp.Value, p));
                 }
             }
@@ -92,7 +104,7 @@ namespace UsageStats
             AddKeyUsage(key);
             RaisePropertyChanged("KeyUsageList");
 
-            double sec = KeyboardActivity.Update(Statistics.InactivityThreshold);
+            double sec = Stats.KeyboardActivity.Update(Statistics.InactivityThreshold);
             RaisePropertyChanged("KeyboardActivity");
 
             if (sec < 4 && sec > 0.1)
@@ -103,10 +115,10 @@ namespace UsageStats
             RaisePropertyChanged("TypingSpeed");
             RaisePropertyChanged("TypingSpeedList");
 
-            KeyStrokes++;
+            Stats.KeyStrokes++;
             RaisePropertyChanged("KeyStrokes");
 
-            KeyCountPerHour.Increase();
+            Stats.KeyCountPerHour.Increase();
             RaisePropertyChanged("KeyCountPerHour");
             RaisePropertyChanged("KeyCountPerHourList");
             RaisePropertyChanged("Report");
@@ -114,13 +126,13 @@ namespace UsageStats
 
         private void AddKeyUsage(string key)
         {
-            if (KeyUsage.ContainsKey(key))
+            if (Stats.KeyUsage.ContainsKey(key))
             {
-                KeyUsage[key] = KeyUsage[key] + 1;
+                Stats.KeyUsage[key] = Stats.KeyUsage[key] + 1;
             }
             else
             {
-                KeyUsage.Add(key, 1);
+                Stats.KeyUsage.Add(key, 1);
             }
         }
     }

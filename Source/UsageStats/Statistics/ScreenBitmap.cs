@@ -12,8 +12,8 @@ namespace UsageStats
 
         public ScreenBitmap(int width)
         {
-            double w = SystemParameters.PrimaryScreenWidth;
-            double h = SystemParameters.PrimaryScreenHeight;
+            double w = SystemParameters.VirtualScreenWidth;
+            double h = SystemParameters.VirtualScreenHeight;
             Scale = width / w;
             var height = (int)(h * Scale);
 

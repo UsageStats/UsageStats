@@ -142,7 +142,7 @@ namespace UsageStats.Properties {
                 this["DisplayDate"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Daily")]
@@ -152,6 +152,21 @@ namespace UsageStats.Properties {
             }
             set {
                 this["ReportInterval"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PushUrl
+        {
+            get
+            {
+                return ((string)(this["PushUrl"]));
+            }
+            set
+            {
+                this["PushUrl"] = value;
             }
         }
     }
