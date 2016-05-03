@@ -205,55 +205,96 @@ Windows Explorer";
             public Statistics.GenericStats Global;
         }
 
-        private void PostReports()
+        private bool PostJSON(string url, string body)
         {
-            if (Settings.PushUrl == string.Empty)
-                return;
+            bool success = true;
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Settings.PushUrl);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            try
             {
-                string json = "{\"user\":\"test\"," +
-                              "\"password\":\"bla\"}";
-                MemoryStream stream1 = new MemoryStream();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
 
-                Stats stats = new Stats();
-                stats.Mouse = MouseStatistics.Stats;
-                stats.Keyboard = KeyboardStatistics.Stats;
-                stats.Global = Statistics.Stats;
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "POST";
+                httpWebRequest.Proxy.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+                httpWebRequest.UseDefaultCredentials = true;
 
-                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Stats));
-                ser.WriteObject(stream1, stats);
-                
-                stream1.Position = 0;
-                StreamReader sr = new StreamReader(stream1);
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(body);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
 
-                string s = sr.ReadToEnd();
-                Console.WriteLine(s);
-
-
-                streamWriter.Write(s);
-                streamWriter.Flush();
-                streamWriter.Close();
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                success = false;
             }
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-            }
-
-
-
-
+            return success;
 
         }
+
+
+
+        private void PostReports(string path)
+        {
+            bool writeOnDisk = true;
+     
+            Stats stats = new Stats();
+            stats.Mouse = MouseStatistics.Stats;
+            stats.Keyboard = KeyboardStatistics.Stats;
+            stats.Global = Statistics.Stats;
+
+            MemoryStream stream1 = new MemoryStream();
+
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Stats));
+            ser.WriteObject(stream1, stats);
+
+            stream1.Position = 0;
+            StreamReader sr = new StreamReader(stream1);
+
+            string json = sr.ReadToEnd();
+            Console.WriteLine(json);
+
+
+            if (Settings.PushUrl != string.Empty)
+            {                           
+                writeOnDisk = ! PostJSON(Settings.PushUrl, json);              
+            }
+
+            if (writeOnDisk)
+            {
+                path = String.Format("{0}Report_{1:yyyy-MM-dd_HHmm}.json", path, RecordingStarted);
+
+                path = FindUniqueName(path);
+                var w = new StreamWriter(path);
+
+                w.Write(json);
+
+                w.Close();
+            }
+        }
+
+
         public void SaveReports()
         {
             string path = Settings.ReportPath;
+
+            if (!String.IsNullOrEmpty(path))
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path += "/";
+            }
+
             SaveReport(Statistics, path);
             foreach (var kvp in ApplicationUsage)
             {
@@ -261,19 +302,11 @@ Windows Explorer";
                 SaveReport(s, Path.Combine(path, kvp.Key));
             }
 
-            PostReports();
+            PostReports(path);
         }
 
         public void SaveReport(Statistics s, string prefix)
-        {
-            if (!String.IsNullOrEmpty(prefix))
-            {
-                if (!Directory.Exists(prefix))
-                {
-                    Directory.CreateDirectory(prefix);
-                }
-                prefix += "/";
-            }
+        {        
             string path;
             switch (Settings.ReportInterval)
             {
@@ -599,7 +632,19 @@ Windows Explorer";
             if (saveReport)
             {
                 // Save report for today and reset
-                SaveReports();
+                try
+                {
+                    SaveReports();
+                }
+                catch (Exception ex)
+                {
+                    do
+                    {
+                        MessageBox.Show(ex.Message);
+                        ex = ex.InnerException;
+                    } while (ex != null);
+                }
+
                 InitStatistics();
             }
         }
