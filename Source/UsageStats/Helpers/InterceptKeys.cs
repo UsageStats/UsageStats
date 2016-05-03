@@ -36,7 +36,7 @@ namespace UsageStats
             using (ProcessModule curModule = curProcess.MainModule)
             {
                 return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
-                                        GetModuleHandle(curModule.ModuleName), 0);
+                                        IntPtr.Zero, 0);
             }
         }
 

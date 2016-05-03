@@ -35,5 +35,8 @@
     <Setting Name="ReportInterval" Type="UsageStats.ReportInterval" Scope="User">
       <Value Profile="(Default)">Daily</Value>
     </Setting>
+    <Setting Name="PushUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

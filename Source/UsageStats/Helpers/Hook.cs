@@ -187,7 +187,7 @@ namespace UsageStats
             hhk = API.SetWindowsHookEx(13, hd, API.GetModuleHandle(mod.ModuleName), 0);
             //13 is the parameter specifying that we're gonna do a low-level keyboard hook
 
-            //MessageBox.Show(Marshal.GetLastWin32Error().ToString()); //for debugging
+//            MessageBox.Show(Marshal.GetLastWin32Error().ToString()); //for debugging
             //Note that this could be a Console.WriteLine(), as well. I just happened
             //to be debugging this in a Windows Application
             //to get the errors, in VS 2005+ (possibly before) do Tools -&gt; Error Lookup
