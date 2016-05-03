@@ -26,13 +26,25 @@ namespace UsageStats
 
         public Window1()
         {
-            this.InitializeComponent();
-            this.vm = new MainViewModel();
-            this.DataContext = vm;
+            try
+            {
+                this.InitializeComponent();
+                this.vm = new MainViewModel();
+                this.DataContext = vm;
 
-            this.Loaded += this.Window1_Loaded;
-            this.Closed += this.Window1_Closed;
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, this.OpenCmdExecuted));
+                this.Loaded += this.Window1_Loaded;
+                this.Closed += this.Window1_Closed;
+                CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, this.OpenCmdExecuted));
+
+            }
+            catch (Exception ex)
+            {
+                do
+                {
+                    MessageBox.Show(ex.Message);
+                    ex = ex.InnerException;
+                } while (ex != null);
+            }
         }
 
         public bool CanClose { get; set; }
@@ -63,7 +75,18 @@ namespace UsageStats
 
         protected override void OnClosed(EventArgs e)
         {
-            this.vm.SaveReports();
+            try
+            {
+                this.vm.SaveReports();
+            }
+            catch (Exception ex)
+            {
+                do
+                {
+                    MessageBox.Show(ex.Message);
+                    ex = ex.InnerException;
+                } while (ex != null);
+            }
             this.vm.Dispose();
             base.OnClosed(e);
         }
@@ -84,12 +107,17 @@ namespace UsageStats
         {
             try
             {
-                vm.SaveReports();                
+                this.vm.SaveReports();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                do
+                {
+                    MessageBox.Show(ex.Message);
+                    ex = ex.InnerException;
+                } while (ex != null);
             }
+
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
