@@ -18,6 +18,9 @@ namespace UsageStats
 {
     public class MainViewModel : Observable
     {
+        private readonly object syncLock = new object();
+
+
         private const string DefaultApplicationList =
             @"Microsoft Visual Studio
 Reflector
@@ -162,18 +165,21 @@ Windows Explorer";
 
         private void InitStatistics()
         {
-            FirstActivity = new DateTime(0);
+            lock (syncLock)
+            {
+                FirstActivity = new DateTime(0);
 
-            RecordingStarted = DateTime.Now;
-            Recording = new ActiveTime();
-            Statistics = new Statistics(Recording);
-            CurrentStatistics = Statistics;
+                RecordingStarted = DateTime.Now;
+                Recording = new ActiveTime();
+                Statistics = new Statistics(Recording);
+                CurrentStatistics = Statistics;
 
-            ApplicationUsage = new Dictionary<string, Statistics>();
+                ApplicationUsage = new Dictionary<string, Statistics>();
 
-            AddApplications();
+                AddApplications();
 
-            lastPoint = WindowHelper.GetCursorPos();
+                lastPoint = WindowHelper.GetCursorPos();
+            }
         }
 
         private string CreateApplicationReport()
@@ -245,7 +251,7 @@ Windows Explorer";
         private void PostReports(string path)
         {
             bool writeOnDisk = true;
-     
+
             Stats stats = new Stats();
             stats.Mouse = MouseStatistics.Stats;
             stats.Keyboard = KeyboardStatistics.Stats;
@@ -264,8 +270,8 @@ Windows Explorer";
 
 
             if (Settings.PushUrl != string.Empty)
-            {                           
-                writeOnDisk = ! PostJSON(Settings.PushUrl, json);              
+            {
+                writeOnDisk = !PostJSON(Settings.PushUrl, json);
             }
 
             if (writeOnDisk)
@@ -306,7 +312,7 @@ Windows Explorer";
         }
 
         public void SaveReport(Statistics s, string prefix)
-        {        
+        {
             string path;
             switch (Settings.ReportInterval)
             {
@@ -481,31 +487,34 @@ Windows Explorer";
 
         private void MouseHandler(IntPtr wparam, IntPtr lparam)
         {
-            switch ((MouseMessages)wparam)
+            lock (syncLock)
             {
-                case MouseMessages.WM_LBUTTONDOWN:
-                    MouseDown(MouseButton.Left);
-                    break;
-                case MouseMessages.WM_LBUTTONUP:
-                    MouseUp(MouseButton.Left);
-                    break;
-                case MouseMessages.WM_MBUTTONDOWN:
-                    MouseDown(MouseButton.Middle);
-                    break;
-                case MouseMessages.WM_RBUTTONDOWN:
-                    MouseDown(MouseButton.Right);
-                    break;
-                case MouseMessages.WM_LBUTTONDBLCLK:
-                case MouseMessages.WM_MBUTTONDBLCLK:
-                case MouseMessages.WM_RBUTTONDBLCLK:
-                    MouseDblClk();
-                    break;
-                case MouseMessages.WM_MOUSEWHEEL:
-                    // wparam: The high-order word indicates the distance the wheel is rotated, expressed in multiples or divisions of 
-                    // WHEEL_DELTA, which is 120. A positive value indicates that the wheel was rotated forward, away from the user; 
-                    // a negative value indicates that the wheel was rotated backward, toward the user.
-                    MouseWheel();
-                    break;
+                switch ((MouseMessages)wparam)
+                {
+                    case MouseMessages.WM_LBUTTONDOWN:
+                        MouseDown(MouseButton.Left);
+                        break;
+                    case MouseMessages.WM_LBUTTONUP:
+                        MouseUp(MouseButton.Left);
+                        break;
+                    case MouseMessages.WM_MBUTTONDOWN:
+                        MouseDown(MouseButton.Middle);
+                        break;
+                    case MouseMessages.WM_RBUTTONDOWN:
+                        MouseDown(MouseButton.Right);
+                        break;
+                    case MouseMessages.WM_LBUTTONDBLCLK:
+                    case MouseMessages.WM_MBUTTONDBLCLK:
+                    case MouseMessages.WM_RBUTTONDBLCLK:
+                        MouseDblClk();
+                        break;
+                    case MouseMessages.WM_MOUSEWHEEL:
+                        // wparam: The high-order word indicates the distance the wheel is rotated, expressed in multiples or divisions of 
+                        // WHEEL_DELTA, which is 120. A positive value indicates that the wheel was rotated forward, away from the user; 
+                        // a negative value indicates that the wheel was rotated backward, toward the user.
+                        MouseWheel();
+                        break;
+                }
             }
         }
 
@@ -549,12 +558,15 @@ Windows Explorer";
 
         public void KeyReader(IntPtr wParam, IntPtr lParam)
         {
-            int virtualKey = Marshal.ReadInt32(lParam);
-            Key k = KeyInterop.KeyFromVirtualKey(virtualKey);
-            var kc = new KeyConverter();
-            string keyName = kc.ConvertToString(k);
+            lock (syncLock)
+            {
+                int virtualKey = Marshal.ReadInt32(lParam);
+                Key k = KeyInterop.KeyFromVirtualKey(virtualKey);
+                var kc = new KeyConverter();
+                string keyName = kc.ConvertToString(k);
 
-            KeyDown(keyName);
+                KeyDown(keyName);
+            }
         }
 
         private void KeyDown(string keyName)
