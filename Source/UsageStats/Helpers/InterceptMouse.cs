@@ -73,16 +73,21 @@ namespace UsageStats
         // may behave incorrectly as a result. If the hook procedure processed the message, it may return 
         // a nonzero value to prevent the system from passing the message to the rest of the hook chain or 
         // the target window procedure.
-        
-            
+
+
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
             {
                 if (_handler != null)
-                    _handler(wParam, lParam);
+                {
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        _handler(wParam, lParam);
+                    }));
+                }
             }
-           
+
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
