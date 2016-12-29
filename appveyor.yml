@@ -1,8 +1,5 @@
 version: 2015.1.{build}
 
-install:
-  - cinst stylecop
-
 platform: Any CPU
 
 configuration: Release
