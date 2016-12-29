@@ -1,1 +1,0 @@
-..\Tools\FileHeaderUpdater.exe /Company="Application Usage Statistics" /Copyright="http://usagestats.codeplex.com, license: Ms-PL" /Directory="..\Source"
