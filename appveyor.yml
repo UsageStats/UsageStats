@@ -7,6 +7,9 @@ platform: Any CPU
 
 configuration: Release
 
+before_build:
+  - nuget restore Source/UsageStats.sln
+
 build:
   project: Source/UsageStats.sln
   verbosity: minimal
