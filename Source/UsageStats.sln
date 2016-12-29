@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStats", "UsageStats\UsageStats.csproj", "{F9FEA872-82CD-4AF4-AA90-DD3ACFDEBD76}"
 EndProject
@@ -15,11 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorder", "TimeRecorde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderStatistics", "TimeRecorderStatistics\TimeRecorderStatistics.csproj", "{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7AB58C2F-DDA9-4000-82A1-12D0CD047B32}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{504F783E-BE52-4A6F-A0EF-159E447BA449}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
+		..\appveyor.yml = ..\appveyor.yml
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Global
