@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 #endif
 
 [assembly: AssemblyProduct("UsageStats")]
-[assembly: AssemblyCompany("objo.net")]
-[assembly: AssemblyCopyright("© Oystein Bjorke. All rights reserved.")]
+[assembly: AssemblyCompany("UsageStats")]
+[assembly: AssemblyCopyright("© UsageStats contributors. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 
 // [assembly: CLSCompliant(true)]
