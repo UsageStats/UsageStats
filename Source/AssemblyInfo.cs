@@ -17,5 +17,5 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Version numbers will be updated by the build script
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyFileVersion("2.0.0")]
+[assembly: AssemblyVersion("0.1.0")]
+[assembly: AssemblyFileVersion("0.1.0")]
