@@ -16,7 +16,16 @@ build:
   project: Source/UsageStats.sln
   verbosity: minimal
 
+after_build:
+  - 7z a TimeRecorder.zip %APPVEYOR_BUILD_FOLDER%\Source\TimeRecorder\bin\Release\TimeRecorder.exe
+  - 7z a TimeRecorder.zip %APPVEYOR_BUILD_FOLDER%\Source\TimeRecorderStatistics\bin\Release\TimeRecorderStatistics.exe*
+  - 7z a UsageStats.zip %APPVEYOR_BUILD_FOLDER%\Source\UsageStats\bin\Release\*.exe*
+  - 7z a UsageStats.zip %APPVEYOR_BUILD_FOLDER%\Source\UsageStats\bin\Release\*.dll
+
 artifacts:
-  - path: Output
+  - path: TimeRecorder.zip
+    name: TimeRecorder-$(APPVEYOR_BUILD_VERSION)
+    type: zip
+  - path: UsageStats.zip
     name: UsageStats-$(APPVEYOR_BUILD_VERSION)
     type: zip
