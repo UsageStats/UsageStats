@@ -177,5 +177,10 @@ namespace UsageStats
                 this.WindowState = WindowState.Minimized;
             }
         }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            this.vm.InitStatistics();
+        }
     }
 }
