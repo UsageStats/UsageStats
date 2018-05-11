@@ -36,7 +36,7 @@
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
-             <MenuItem Header="_Help">
+            <MenuItem Header="_Help">
                 <MenuItem Header="Project web page" Click="ProjectWebPage_Click"/>
                 <MenuItem Header="Chec_k for Updates" IsEnabled="False" IsCheckable="True" IsChecked="{Binding Settings.CheckForUpdates}"/>
                 <Separator/>
@@ -53,7 +53,10 @@
         </StatusBar>
         <TabControl Margin="0 4 0 0">
             <TabItem Header="General">
-                <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}"/>
+                <DockPanel HorizontalAlignment="Left">
+                    <Button Content="Reset" DockPanel.Dock="Bottom" Click="Reset_Click" />
+                    <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}" DockPanel.Dock="Top" />
+                </DockPanel>
             </TabItem>
             <TabItem Header="Applications">
                 <TabControl>
@@ -147,7 +150,7 @@
                 <TabControl>
                     <TabItem Header="Report">
                         <TextBox AcceptsReturn="True" Text="{Binding Report, Mode=OneWay}"  FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
-                    </TabItem>                   
+                    </TabItem>
                     <TabItem Header="Keys">
                         <local:HorizontalBarChart Title="Key frequency" 
                                         ItemsSource="{Binding KeyUsageList}"/>

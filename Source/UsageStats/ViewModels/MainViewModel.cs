@@ -163,7 +163,7 @@ Windows Explorer";
             }
         }
 
-        private void InitStatistics()
+        public void InitStatistics()
         {
             lock (syncLock)
             {
