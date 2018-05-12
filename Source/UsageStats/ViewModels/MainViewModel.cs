@@ -57,6 +57,7 @@ Windows Explorer";
 
         public MainViewModel()
         {
+            UsabilityModeDisabled = true;
             string applicationInstance = Assembly.GetExecutingAssembly().GetName().ToString().Substring(0, 15);
             try
             {
@@ -145,11 +146,19 @@ Windows Explorer";
                 sb.AppendLine(String.Format("Recording ended:   {0}", Recording.LastActivity));
                 sb.AppendLine(String.Format("First activity:    {0}", FirstActivity));
                 sb.AppendLine(String.Format("Last activity:     {0}", LastActivity));
-                TimeSpan duration = LastActivity - FirstActivity;
-                sb.AppendLine(String.Format("Duration:                     {0}", duration.ToShortString()));
+                
+                sb.AppendLine(String.Format("Duration:                     {0}", Duration.ToShortString()));
                 sb.AppendLine();
                 sb.AppendLine(Statistics.ToString());
+                RaisePropertyChanged(nameof(Duration));
                 return sb.ToString();
+            }
+        }
+        public TimeSpan Duration
+        {
+            get
+            {
+                return LastActivity - FirstActivity;
             }
         }
 
@@ -696,5 +705,18 @@ Windows Explorer";
             RaisePropertyChanged("AlwaysOnTop");
             AddApplications();
         }
+
+
+        private bool _UsabilityModeDisabled;
+        public bool UsabilityModeDisabled
+        {
+            get { return _UsabilityModeDisabled; }
+            set
+            {
+                _UsabilityModeDisabled = value;
+                RaisePropertyChanged(nameof(UsabilityModeDisabled));
+            }
+        }
+
     }
 }
