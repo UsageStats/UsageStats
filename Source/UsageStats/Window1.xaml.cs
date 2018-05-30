@@ -197,14 +197,15 @@ namespace UsageStats
         /// <param name="e">Provides event informations</param>
         private void Usability_Click(object sender, RoutedEventArgs e)
         {
-            if(this.vm.UsabilityModeDisabled)
+            if (this.vm.UsabilityModeDisabled)
             {
                 //save current window size
                 _WindowWidth = Width;
                 _WindowHeight = Height;
                 //Set window size for the usability test
-                Width = 200;
-                Height = 110;
+                WindowStyle = WindowStyle.ToolWindow;
+                Width = 160;
+                Height = 90;
                 this.vm.InitStatistics();
             }
             else
@@ -212,6 +213,7 @@ namespace UsageStats
                 //reassign window size
                 Width = _WindowWidth;
                 Height = _WindowHeight;
+                WindowStyle = WindowStyle.SingleBorderWindow;
             }
             this.vm.UsabilityModeDisabled = !this.vm.UsabilityModeDisabled;
             ShowInTaskbar = !this.vm.UsabilityModeDisabled;

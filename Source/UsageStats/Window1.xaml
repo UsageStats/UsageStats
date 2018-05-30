@@ -29,12 +29,12 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Visibility="{Binding Path=UsabilityModeDisabled,Converter={StaticResource BooleanToVisibilityConverter}}">
             <MenuItem Header="_File">
                 <MenuItem Header="Open report folder" ToolTip="{Binding Settings.ReportPath}" Click="ReportFolder_Click"/>
                 <MenuItem Header="Save report" ToolTip="{Binding Settings.ReportPath}" Click="SaveReport_Click"/>
                 <MenuItem Header="_Preferences..." Click="Settings_Click"/>
-                <MenuItem Header="Enable/Disable Usability-Test Mode" Click="Usability_Click" />
+                <MenuItem Header="Enable tiny mode" Click="Usability_Click" />
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
@@ -70,7 +70,7 @@
             </StackPanel.Style>
             <TextBlock  >
                 <Run Text="Duration: " />
-                <Run Text="{Binding Duration,Mode=OneWay}" />
+                <Run Text="{Binding Duration,Mode=OneWay, StringFormat={}{0:mm\\:ss\\:fff}}" />
             </TextBlock>
             <StackPanel Orientation="Horizontal" Margin="0">
                 <TextBlock>
@@ -81,14 +81,14 @@
                 <Run Text="DClicks:" />
                 <Run Text="{Binding MouseStatistics.Stats.MouseDoubleClicks}" />
                 </TextBlock>
-
+                <Button Margin="5 0 0 0" Content="Reset" ToolTip="Reset statistic" Click="Reset_Click" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0">
                 <TextBlock DockPanel.Dock="Bottom">
                 <Run Text="MDistance:" />
                 <Run Text="{Binding MouseStatistics.MouseDistanceText,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" />
                 </TextBlock>
-                <Button Content="Reset statistic" Click="Reset_Click" />
+                <Button Margin="5 0 0 0" Content="Leave" ToolTip="Leave Mode" Click="Usability_Click" />
             </StackPanel>
         </StackPanel>
         <TabControl Margin="0 4 0 0"
