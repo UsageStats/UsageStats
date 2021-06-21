@@ -35,7 +35,6 @@ namespace UsageStats
                 this.Loaded += this.Window1_Loaded;
                 this.Closed += this.Window1_Closed;
                 CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, this.OpenCmdExecuted));
-
             }
             catch (Exception ex)
             {
@@ -117,7 +116,6 @@ namespace UsageStats
                     ex = ex.InnerException;
                 } while (ex != null);
             }
-
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)

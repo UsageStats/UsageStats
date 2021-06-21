@@ -32,6 +32,8 @@ namespace TimeRecorder
 {
     using System;
     using System.Windows.Forms;
+    using System.Threading;
+    using System.Reflection;
 
     /// <summary>
     /// The program.
@@ -44,9 +46,16 @@ namespace TimeRecorder
         [STAThread]
         private static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TimeRecorderApplicationContext());
+            var appName = Assembly.GetEntryAssembly().GetName().Name;
+            using (var mutex = new Mutex(true, appName + "Singleton", out bool notAlreadyRunning))
+            {
+                if (notAlreadyRunning)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new TimeRecorderApplicationContext());
+                }
+            }
         }
     }
 }

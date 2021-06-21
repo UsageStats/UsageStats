@@ -86,7 +86,6 @@ namespace UsageStats
                 ctx.DrawText(ft, new Point(5, 5));
             }
             rtb.Render(dv);
-
         }
     }
 }
