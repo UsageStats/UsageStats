@@ -8,7 +8,7 @@ platform: Any CPU
 
 configuration: Release
 
-image: Visual Studio 2019
+image: Visual Studio 2019 
 
 before_build:
   - nuget restore Source/UsageStats.sln
