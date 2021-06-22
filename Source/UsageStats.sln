@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStats", "UsageStats\UsageStats.csproj", "{F9FEA872-82CD-4AF4-AA90-DD3ACFDEBD76}"
 EndProject
@@ -17,6 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderStatistics", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{504F783E-BE52-4A6F-A0EF-159E447BA449}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\appveyor.yml = ..\appveyor.yml
 		..\README.md = ..\README.md
 	EndProjectSection
@@ -52,5 +53,8 @@ Global
 		{1A8B72CE-55BA-4C54-B48C-98E2DF52F4DA} = {32DFC079-28BD-47C1-86CC-ADBAD0CF45A3}
 		{39CDC360-5C58-4756-90E6-9EAAEC1761B5} = {F1EFBB30-7FF4-47C0-8B95-FA82FE3DE533}
 		{3A380DE4-DF0F-4D70-B12C-FD0BC92ACAB7} = {F1EFBB30-7FF4-47C0-8B95-FA82FE3DE533}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E74D744-5143-4A81-8CCC-2E1BBCE0D16E}
 	EndGlobalSection
 EndGlobal

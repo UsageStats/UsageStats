@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace UsageStats
 {
-    
     public class KeyboardStatistics : Observable
     {
         public KeyboardStatistics(ActiveTime total, TimePerHour activityPerHour)

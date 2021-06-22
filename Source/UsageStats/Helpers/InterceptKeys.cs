@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace UsageStats
 {
-
     // http://blogs.msdn.com/toub/archive/2006/05/03/589423.aspx
     
     public class InterceptKeys : IDisposable

@@ -20,7 +20,6 @@ namespace UsageStats
     {
         private readonly object syncLock = new object();
 
-
         private const string DefaultApplicationList =
             @"Microsoft Visual Studio
 Reflector
@@ -64,7 +63,6 @@ Windows Explorer";
             }
             catch (Exception)
             {
-
             }
 
             Settings = new SettingsViewModel();
@@ -92,7 +90,6 @@ Windows Explorer";
             Hook.CreateKeyboardHook(KeyReader);
             keys = new InterceptKeys();
             mouse = new InterceptMouse(MouseHandler);
-
         }
 
         public DateTime RecordingStarted { get; set; }
@@ -152,7 +149,6 @@ Windows Explorer";
                 return sb.ToString();
             }
         }
-
 
         public void UpdateMemoryCounter()
         {
@@ -243,10 +239,7 @@ Windows Explorer";
             }
 
             return success;
-
         }
-
-
 
         private void PostReports(string path)
         {
@@ -268,7 +261,6 @@ Windows Explorer";
             string json = sr.ReadToEnd();
             Console.WriteLine(json);
 
-
             if (Settings.PushUrl != string.Empty)
             {
                 writeOnDisk = !PostJSON(Settings.PushUrl, json);
@@ -286,7 +278,6 @@ Windows Explorer";
                 w.Close();
             }
         }
-
 
         public void SaveReports()
         {
@@ -426,7 +417,6 @@ Windows Explorer";
             return newPath;
         }
 
-
         public void Dispose()
         {
             if (mouse != null)
@@ -463,7 +453,6 @@ Windows Explorer";
                 AddApplications(s);
             }
         }
-
 
         private void AddApplication(string appName)
         {
@@ -661,7 +650,6 @@ Windows Explorer";
             }
         }
 
-
         private void MouseMove(Point pt)
         {
             Statistics.MouseMove(pt);
@@ -671,7 +659,6 @@ Windows Explorer";
             }
             UpdateFirstAndLast();
         }
-
 
         public void UpdateFirstAndLast()
         {

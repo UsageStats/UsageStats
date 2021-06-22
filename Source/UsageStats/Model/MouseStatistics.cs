@@ -12,7 +12,6 @@ namespace UsageStats
 {
     public class MouseStatistics : Observable
     {
-      
         public MouseStats Stats { get; set; }
         private readonly Brush leftBrush = new SolidColorBrush(Color.FromArgb(60, 0, 200, 0));
         private readonly Brush middleBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 255));
@@ -83,7 +82,6 @@ namespace UsageStats
             public Histogram MovementSpeed { get; set; }
             [DataMember]
             public Histogram MovementDirection { get; set; }
-
         }
         public ScreenBitmap ClickMap { get; set; }
         public ScreenBitmap DoubleClickMap { get; set; }
