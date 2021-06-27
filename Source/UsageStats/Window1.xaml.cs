@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using PropertyTools.Wpf;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using System.Reflection;
+using System.Threading;
 
 namespace UsageStats
 {
@@ -26,26 +28,37 @@ namespace UsageStats
 
         public Window1()
         {
-            try
+            // Single instance mode by MUTEX implementation.
+            var appName = Assembly.GetEntryAssembly().GetName().Name;
+            using (var mutex = new Mutex(true, appName + "Singleton", out bool notAlreadyRunning))
             {
-                this.InitializeComponent();
-                this.vm = new MainViewModel();
-                this.DataContext = vm;
-
-                this.Loaded += this.Window1_Loaded;
-                this.Closed += this.Window1_Closed;
-                CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, this.OpenCmdExecuted));
-            }
-            catch (Exception ex)
-            {
-                do
+                if (notAlreadyRunning)
                 {
-                    MessageBox.Show(ex.Message);
-                    ex = ex.InnerException;
-                } while (ex != null);
+                    try
+                    {
+                        this.InitializeComponent();
+                        this.vm = new MainViewModel();
+                        this.DataContext = vm;
+
+                        this.Loaded += this.Window1_Loaded;
+                        this.Closed += this.Window1_Closed;
+                        CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, this.OpenCmdExecuted));
+                    }
+                    catch (Exception ex)
+                    {
+                        do
+                        {
+                            MessageBox.Show(ex.Message);
+                            ex = ex.InnerException;
+                        } while (ex != null);
+                    }
+                }
+                else
+                {
+                    Application.Current.Shutdown();
+                }
             }
         }
-
         public bool CanClose { get; set; }
 
         private void Window1_Closed(object sender, EventArgs e)

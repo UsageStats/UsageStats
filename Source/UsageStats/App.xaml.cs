@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace UsageStats
 {
@@ -7,5 +8,6 @@ namespace UsageStats
     /// </summary>
     public partial class App : Application
     {
+ 
     }
 }
